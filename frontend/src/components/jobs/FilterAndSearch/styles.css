@@ -1,0 +1,20 @@
+.yellow-label {
+    background-color: rgb(40, 73, 134);
+    padding: 5px;
+    border-radius: 3px;
+    color: white;
+  }
+  
+.blue-label {
+    background-color: rgb(128, 195, 221);
+    padding: 5px;
+    border-radius: 3px;
+    
+  }
+
+.orange-label {
+    background-color: rgb(241, 162, 16);
+    padding: 5px;
+    border-radius: 3px;
+    color: white;
+  }
