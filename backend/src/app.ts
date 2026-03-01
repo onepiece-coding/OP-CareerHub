@@ -37,7 +37,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'img-src': ["'self'", 'data:', 'res.cloudinary.com', 'cdn.pixabay.com'],
+        'img-src': ["'self'", 'data:', 'blob:', 'res.cloudinary.com', 'cdn.pixabay.com'],
         'connect-src': [
           "'self'",
           env.CLIENT_DOMAIN ?? "'self'",

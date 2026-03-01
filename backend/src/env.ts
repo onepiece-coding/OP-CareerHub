@@ -16,7 +16,6 @@ const base = z.object({
 // Vars required for runtime services
 const runtime = z.object({
   MONGO_URI: z.string().optional(), // required later unless test
-  // JWT secret: require at least 32 characters to enforce strong secrets
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
   REFRESH_TOKEN_SECRET: z
     .string()
@@ -38,7 +37,10 @@ const runtime = z.object({
   CLOUDINARY_API_SECRET: z.string().optional(),
   // Email
   APP_EMAIL_ADDRESS: z.email().optional(),
-  APP_EMAIL_PASSWORD: z.string().optional(),
+  FROM_EMAIL: z.email().optional(),
+  BREVO_API_KEY: z.string().optional(),
+  EMAIL_TIMEOUT_MS: z.coerce.number().optional(),
+  APP_NAME: z.string().optional(),
 });
 
 const envSchema = base.extend(runtime.shape).refine(
@@ -62,10 +64,10 @@ const envSchema = base.extend(runtime.shape).refine(
 
     // Email
     const hasEmailCreds =
-      typeof data.APP_EMAIL_ADDRESS === 'string' &&
-      data.APP_EMAIL_ADDRESS.length > 0 &&
-      typeof data.APP_EMAIL_PASSWORD === 'string' &&
-      data.APP_EMAIL_PASSWORD.length > 0;
+      typeof data.FROM_EMAIL === 'string' &&
+      data.FROM_EMAIL.length > 0 &&
+      typeof data.BREVO_API_KEY === 'string' &&
+      data.BREVO_API_KEY.length > 0;
 
     return hasMongo && hasJwt && hasCloudinary && hasEmailCreds;
   },

@@ -1,90 +1,138 @@
-import nodemailer, {
-  Transporter,
-  SendMailOptions,
-  SentMessageInfo,
-} from 'nodemailer';
-import { env } from '../env.js';
 import logger from './logger.js';
+import { env } from '../env.js';
 
 type EmailPayload = {
   to: string;
   subject: string;
   html: string;
-  from?: string; // optional override
+  from?: string;
 };
 
-let transporterPromise: Promise<Transporter> | null = null;
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+const BREVO_API_KEY = env.BREVO_API_KEY ?? undefined;
+const DEFAULT_FROM = env.FROM_EMAIL ?? env.APP_EMAIL_ADDRESS;
+const DEFAULT_TIMEOUT_MS = Number(env.EMAIL_TIMEOUT_MS ?? 10000);
 
-async function getTransporter(): Promise<Transporter> {
-  if (transporterPromise) return transporterPromise;
-
-  transporterPromise = (async (): Promise<Transporter> => {
-    if (env.NODE_ENV === 'test') {
-      const testAccount = await nodemailer.createTestAccount();
-      const tx = nodemailer.createTransport({
-        host: testAccount.smtp.host,
-        port: testAccount.smtp.port,
-        secure: testAccount.smtp.secure,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
-      });
-      return tx;
-    }
-
-    if (!env.APP_EMAIL_ADDRESS || !env.APP_EMAIL_PASSWORD) {
-      throw new Error(
-        'Email is not configured: set APP_EMAIL_ADDRESS and APP_EMAIL_PASSWORD',
-      );
-    }
-
-    const tx = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: env.APP_EMAIL_ADDRESS,
-        pass: env.APP_EMAIL_PASSWORD,
-      },
-    });
-    await tx.verify();
-    return tx;
-  })();
-
-  return transporterPromise;
-}
-
-export async function sendEmail(
-  { to, subject, html, from }: EmailPayload,
-  transporterOverride?: Transporter,
-): Promise<SentMessageInfo | string> {
-  const transporter = transporterOverride ?? (await getTransporter());
-
-  const mailOptions: SendMailOptions = {
-    from: from ?? env.APP_EMAIL_ADDRESS,
-    to,
-    subject,
-    html,
-  };
+/**
+ * Minimal timeout wrapper around fetch.
+ * Accepts a fetchFn to allow injection in tests.
+ */
+async function timeoutFetch(
+  input: RequestInfo,
+  init: RequestInit = {},
+  timeout = DEFAULT_TIMEOUT_MS,
+  fetchFn: (
+    input: RequestInfo,
+    init?: RequestInit,
+  ) => Promise<Response> = fetch,
+): Promise<Response> {
+  const ac = new AbortController();
+  const id = setTimeout(() => ac.abort(), timeout);
 
   try {
-    const info = (await transporter.sendMail(mailOptions)) as SentMessageInfo;
+    // passing the AbortSignal via `signal` so fetch can be aborted.
+    const res = await fetchFn(input, { ...init, signal: ac.signal });
+    return res;
+  } finally {
+    // ensure we always clear the timeout (cleanup)
+    clearTimeout(id);
+  }
+}
 
-    if (env.NODE_ENV === 'test') {
-      const preview = nodemailer.getTestMessageUrl(info);
-      return preview ?? info;
+/**
+ * sendEmail
+ *
+ * Behavior:
+ * - If BREVO_API_KEY is set -> use Brevo HTTP API via fetch (or injected fetchFn).
+ * - If running tests (NODE_ENV === 'test') and BREVO_API_KEY is not set -> do not attempt network call; return a mocked success object.
+ *
+ * The optional fetchFn is intended for tests (inject a mock/fake fetch implementation).
+ */
+export async function sendEmail(
+  { to, subject, html, from }: EmailPayload,
+  fetchFn?: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+): Promise<any> {
+  // Test mode: allow tests to avoid real network calls
+  if (env.NODE_ENV === 'test' && !BREVO_API_KEY) {
+    logger.info(
+      'sendEmail: test env without BREVO_API_KEY — returning mock response',
+    );
+    return {
+      ok: true,
+      message: 'Email send mocked in test env',
+      to,
+      subject,
+    };
+  }
+
+  if (!BREVO_API_KEY) {
+    // In non-test runtime we require a configured Brevo key
+    throw new Error(
+      'Email provider not configured. Set BREVO_API_KEY (or run tests with NODE_ENV=test).',
+    );
+  }
+
+  const payload = {
+    sender: {
+      email: from ?? DEFAULT_FROM,
+      name: env.APP_NAME ?? 'op-careerhub',
+    },
+    to: [{ email: to }],
+    subject,
+    htmlContent: html,
+  };
+
+  let res: Response;
+  try {
+    res = await timeoutFetch(
+      BREVO_API_URL,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': BREVO_API_KEY,
+        },
+        body: JSON.stringify(payload),
+      },
+      DEFAULT_TIMEOUT_MS,
+      fetchFn,
+    );
+  } catch (networkErr: any) {
+    const message =
+      networkErr?.name === 'AbortError'
+        ? 'Request timed out'
+        : networkErr?.message;
+    logger.error('Brevo network error', { message, stack: networkErr?.stack });
+    throw new Error('Internal Server Error (email network)');
+  }
+
+  const contentType = res.headers.get('content-type') ?? '';
+  let body: any = null;
+  if (contentType.includes('application/json')) {
+    try {
+      body = await res.json();
+    } catch {
+      body = null;
     }
+  } else {
+    try {
+      body = await res.text();
+    } catch {
+      body = null;
+    }
+  }
 
-    logger.info('Email sent:', {
-      messageId: info.messageId,
-      accepted: info.accepted?.length ?? 0,
-      rejected: info.rejected?.length ?? 0,
+  if (!res.ok) {
+    logger.error('Brevo API error', {
+      status: res.status,
+      statusText: res.statusText,
+      body,
     });
-
-    return info;
-  } catch (err) {
-    logger.error('Error sending email', err);
     throw new Error('Internal Server Error (email send)');
   }
+
+  logger.info('Brevo send success', { status: res.status, body });
+  return body;
 }
 
 export default sendEmail;
