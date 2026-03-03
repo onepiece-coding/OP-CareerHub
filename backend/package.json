@@ -8,7 +8,11 @@
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "build": "tsc -p tsconfig.build.json",
     "start": "node --enable-source-maps dist/server.js",
-    "lint": "eslint \"src/**/*.{ts,js}\" --fix",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest",
+    "test:coverage": "cross-env NODE_ENV=test vitest run --coverage",
+    "lint": "eslint \"src/**/*.{ts,js}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,js}\" --ext .ts,.js --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\""
   },
   "author": "Mohamed Bouderya",
@@ -50,12 +54,19 @@
     "@types/node": "^25.2.3",
     "@types/nodemailer": "^7.0.9",
     "@types/streamifier": "^0.1.2",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
+    "@types/supertest": "^7.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "cross-env": "^10.1.0",
-    "eslint": "^10.0.1",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "mockingoose": "^3.0.0",
+    "mongodb-memory-server": "^11.0.1",
     "prettier": "^3.8.1",
+    "supertest": "^7.2.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

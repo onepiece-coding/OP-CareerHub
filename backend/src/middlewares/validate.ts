@@ -10,7 +10,11 @@ type SchemaMap = {
   params?: AnyZodSchema;
 };
 
-function safeAssignReqPart(req: any, part: 'body' | 'query' | 'params', parsed: any) {
+function safeAssignReqPart(
+  req: any,
+  part: 'body' | 'query' | 'params',
+  parsed: any,
+) {
   if (parsed === undefined) return;
   const existing = req[part];
   if (existing && typeof existing === 'object') {

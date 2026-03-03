@@ -25,14 +25,14 @@ export const validateAddJob = z.object({
   ),
   jobStatus: z.enum(['pending', 'interview', 'declined']).optional(),
   jobType: z.enum(['full-time', 'part-time', 'internship']).optional(),
-  jobLocation: z.preprocess(sanitizeText, z.string().trim()),
-  jobVacancy: z.preprocess(sanitizeText, z.string().trim()),
-  jobSalary: z.preprocess(sanitizeText, z.string().trim()),
-  jobDeadline: z.preprocess(sanitizeText, z.string().trim()),
+  jobLocation: z.preprocess(sanitizeText, z.string().trim().min(1)),
+  jobVacancy: z.preprocess(sanitizeText, z.string().trim().min(1)),
+  jobSalary: z.preprocess(sanitizeText, z.string().trim().min(1)),
+  jobDeadline: z.preprocess(sanitizeText, z.string().trim().min(1)),
   jobSkills: z.preprocess((val: unknown) => {
     if (typeof val === 'string') {
       return val
-        .split(/[,\\n]+/)
+        .split(/[,\r\n]+/)
         .map((s) => (sanitizeText(s) as string).trim())
         .filter(Boolean);
     }
@@ -51,7 +51,7 @@ export const validateAddJob = z.object({
   jobFacilities: z.preprocess((val: unknown) => {
     if (typeof val === 'string') {
       return val
-        .split(/[,\\n]+/)
+        .split(/[,\r\n]+/)
         .map((s) => (sanitizeText(s) as string).trim())
         .filter(Boolean);
     }
@@ -67,7 +67,7 @@ export const validateAddJob = z.object({
     return [];
   }, z.array(z.string().trim())),
 
-  jobContact: z.preprocess(sanitizeText, z.string().trim()),
+  jobContact: z.preprocess(sanitizeText, z.string().trim().min(1)),
 });
 
 // Validate Update Job
@@ -101,14 +101,14 @@ export const validateUpdateJob = z.object({
   ),
   jobStatus: z.enum(['pending', 'interview', 'declined']).optional(),
   jobType: z.enum(['full-time', 'part-time', 'internship']).optional(),
-  jobLocation: z.preprocess(sanitizeText, z.string().trim().optional()),
-  jobVacancy: z.preprocess(sanitizeText, z.string().trim().optional()),
-  jobSalary: z.preprocess(sanitizeText, z.string().trim().optional()),
-  jobDeadline: z.preprocess(sanitizeText, z.string().trim().optional()),
+  jobLocation: z.preprocess(sanitizeText, z.string().trim().min(1).optional()),
+  jobVacancy: z.preprocess(sanitizeText, z.string().trim().min(1).optional()),
+  jobSalary: z.preprocess(sanitizeText, z.string().trim().min(1).optional()),
+  jobDeadline: z.preprocess(sanitizeText, z.string().trim().min(1).optional()),
   jobSkills: z.preprocess((val: unknown) => {
     if (typeof val === 'string') {
       return val
-        .split(/[,\\n]+/)
+        .split(/[,\r\n]+/)
         .map((s) => (sanitizeText(s) as string).trim())
         .filter(Boolean);
     }
@@ -127,7 +127,7 @@ export const validateUpdateJob = z.object({
   jobFacilities: z.preprocess((val: unknown) => {
     if (typeof val === 'string') {
       return val
-        .split(/[,\\n]+/)
+        .split(/[,\r\n]+/)
         .map((s) => (sanitizeText(s) as string).trim())
         .filter(Boolean);
     }
@@ -143,7 +143,7 @@ export const validateUpdateJob = z.object({
     return [];
   }, z.array(z.string().trim()).optional()),
 
-  jobContact: z.preprocess(sanitizeText, z.string().trim().optional()),
+  jobContact: z.preprocess(sanitizeText, z.string().trim().min(1).optional()),
 });
 
 export type AddJobInput = z.infer<typeof validateAddJob>;

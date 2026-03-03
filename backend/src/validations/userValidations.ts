@@ -1,14 +1,15 @@
-import { z } from "zod";
-import { sanitizeText } from "../utils/sanitize.js";
+import { z } from 'zod';
+import { sanitizeText } from '../utils/sanitize.js';
 
 export const passwordSchema = z
   .string()
   .trim()
-  .min(8, "Password must be at least 8 characters")
-  .max(128, "Password must be at most 128 characters")
-  .regex(/[A-Z]/, "Password must contain an uppercase letter")
-  .regex(/[0-9]/, "Password must contain a number")
-  .regex(/[^a-zA-Z0-9]/, "Password must contain a special character");
+  .min(8, 'Password must be at least 8 characters')
+  .max(128, 'Password must be at most 128 characters')
+  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+  .regex(/[0-9]/, 'Password must contain a number')
+  .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character')
+  .regex(/^\S+$/, 'Password must not contain spaces');
 
 // Validate Register User
 export const validateRegisterUser = z.object({
@@ -17,16 +18,16 @@ export const validateRegisterUser = z.object({
     z
       .string()
       .trim()
-      .min(2, "Username too short")
-      .max(100, "Username too long"),
+      .min(2, 'Username too short')
+      .max(100, 'Username too long'),
   ),
   email: z.preprocess(
     sanitizeText,
     z
-      .email("Invalid email")
+      .email('Invalid email')
       .trim()
-      .min(5, "Email too short")
-      .max(100, "Email too long"),
+      .min(5, 'Email too short')
+      .max(100, 'Email too long'),
   ),
   password: passwordSchema,
   location: z.preprocess(
@@ -34,27 +35,27 @@ export const validateRegisterUser = z.object({
     z
       .string()
       .trim()
-      .min(6, "Location Should be (country, city, street)")
-      .max(250, "Location too long")
+      .min(6, 'Location Should be (country, city, street)')
+      .max(250, 'Location too long')
       .optional(),
   ),
-  gender: z.string().optional(),
+  gender: z.enum(['male', 'female']).optional(),
 });
 
 // Validate Login User
 export const validateLoginUser = z.object({
   email: z.preprocess(
     sanitizeText,
-    z.email("Invalid email").min(1, "Email required").trim(),
+    z.email('Invalid email').min(1, 'Email required').trim(),
   ),
-  password: z.string().trim().min(1, "Password required"),
+  password: z.string().trim().min(1, 'Password required'),
 });
 
 // Validate Email
 export const validateEmail = z.object({
   email: z.preprocess(
     sanitizeText,
-    z.email("Invalid email").trim().min(1, "Email required"),
+    z.email('Invalid email').trim().min(1, 'Email required'),
   ),
 });
 
@@ -70,8 +71,8 @@ export const validateUpdateUser = z.object({
     z
       .string()
       .trim()
-      .min(2, "Username too short")
-      .max(100, "Username too long")
+      .min(2, 'Username too short')
+      .max(100, 'Username too long')
       .optional(),
   ),
   password: passwordSchema.optional(),
@@ -80,11 +81,11 @@ export const validateUpdateUser = z.object({
     z
       .string()
       .trim()
-      .min(6, "Location Should be (country, city, street)")
-      .max(250, "Location too long")
+      .min(6, 'Location Should be (country, city, street)')
+      .max(250, 'Location too long')
       .optional(),
   ),
-  gender: z.string().trim().optional(),
+  gender: z.enum(['male', 'female']).optional(),
 });
 
 export type RegisterUserInput = z.infer<typeof validateRegisterUser>;

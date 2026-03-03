@@ -6,6 +6,7 @@ export const validateApplyInJob = z.object({
   jobId: z
     .string()
     .trim()
+    .min(1)
     .refine((v) => (v ? mongoose.Types.ObjectId.isValid(v) : true), {
       message: 'Invalid jobId',
     }),
@@ -16,6 +17,7 @@ export const validateUpdateApplication = z.object({
   jobId: z
     .string()
     .trim()
+    .min(1)
     .refine((v) => (v ? mongoose.Types.ObjectId.isValid(v) : true), {
       message: 'Invalid jobId',
     }),

@@ -62,7 +62,7 @@ export const getMonthlyStatsCtrl = asyncHandler(
     const defaultStats: DefaultStat[] = [
       { name: 'pending', value: statusMap['pending'] || 0 },
       { name: 'interview', value: statusMap['interview'] || 0 },
-      { name: 'rejected', value: statusMap['rejected'] || 0 },
+      { name: 'rejected', value: statusMap['declined'] || 0 },
     ];
 
     const monthly_stats = (await Job.aggregate([

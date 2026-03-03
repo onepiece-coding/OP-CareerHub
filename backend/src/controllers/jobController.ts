@@ -168,13 +168,16 @@ export const updateSingleJobCtrl = asyncHandler(
       throw createError(404, 'Job not found!');
     }
 
+    if (
+      Object.prototype.hasOwnProperty.call(req.body, 'jobStatus') &&
+      job.jobStatus === req.body.jobStatus
+    ) {
+      throw createError(400, 'Nothing to update!');
+    }
+
     const updatedJob = await Job.findByIdAndUpdate(id, data, {
       new: true,
     });
-
-    if (job.jobStatus === req.body.jobStatus) {
-      throw createError(400, 'Nothing to update!');
-    }
 
     const applications = await Application.find({
       jobId: updatedJob!._id,

@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import { env } from "../env.js";
-import logger from "../utils/logger.js";
+import mongoose from 'mongoose';
+import { env } from '../env.js';
+import logger from '../utils/logger.js';
 
 const connectToDB = async (
   uri?: string,
@@ -13,8 +13,8 @@ const connectToDB = async (
   const mongoUri = uri ?? usedEnv.MONGO_URI;
 
   // In non-test env require a real MONGO_URI
-  if (!mongoUri && usedEnv.NODE_ENV !== "test") {
-    throw new Error("Missing MONGO_URI in environment variables");
+  if (!mongoUri && usedEnv.NODE_ENV !== 'test') {
+    throw new Error('Missing MONGO_URI in environment variables');
   }
 
   if (!mongoUri) return;
@@ -23,9 +23,9 @@ const connectToDB = async (
 
   try {
     await client.connect(mongoUri);
-    logger.info("MongoDB connected");
+    logger.info('MongoDB connected');
   } catch (err) {
-    logger.error("Error connecting to MongoDB", err);
+    logger.error('Error connecting to MongoDB', err);
     throw err;
   }
 };

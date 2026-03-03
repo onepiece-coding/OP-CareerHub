@@ -83,7 +83,8 @@ UserSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.comparePassword = function (candidate: string) {
+// comparePassword
+UserSchema.methods.comparePassword = function (this: IUser, candidate: string) {
   return bcrypt.compare(candidate, this.password);
 };
 

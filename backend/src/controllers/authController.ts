@@ -329,6 +329,11 @@ export const logoutCtrl = asyncHandler(async (req: Request, res: Response) => {
   res.clearCookie(ACCESS_COOKIE_NAME, { path: '/' });
   res.clearCookie(REFRESH_COOKIE_NAME, { path: '/' });
 
+  // const cookieOptions = getCookieOptions({ isRefresh: false });
+  // res.clearCookie(ACCESS_COOKIE_NAME, { path: '/', ...cookieOptions });
+  // const refreshOptions = getCookieOptions({ isRefresh: true });
+  // res.clearCookie(REFRESH_COOKIE_NAME, { path: '/', ...refreshOptions });
+
   res.status(200).json({ message: 'Logged out' });
 });
 

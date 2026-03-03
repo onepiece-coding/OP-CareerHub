@@ -54,7 +54,8 @@ const ApplicationSchema = new Schema<IApplication>(
       type: Date,
       validate: [
         {
-          validator: function (value) {
+          validator: function (this: any, value?: Date) {
+            if (!value) return true;
             return (this as any).dateOfApplication <= value;
           },
           message: 'dateOfJoining should be greater than dateOfApplication',
@@ -65,4 +66,4 @@ const ApplicationSchema = new Schema<IApplication>(
   { timestamps: true },
 );
 
-export default model<IApplication>('Applicatioon', ApplicationSchema);
+export default model<IApplication>('Application', ApplicationSchema);

@@ -1,51 +1,51 @@
-import { Router } from "express";
-import { authenticateUser, authorizeRoles } from "../middlewares/auth.js";
+import { Router } from 'express';
+import { authenticateUser, authorizeRoles } from '../middlewares/auth.js';
 import {
   getCandidateApplicationsCtrl,
   getRecruiterJobsApplicationsCtrl,
   applyInJobCtrl,
   updateApplicationStatusCtrl,
-} from "../controllers/applicationController.js";
+} from '../controllers/applicationController.js';
 import {
   validateApplyInJob,
   validateUpdateApplication,
-} from "../validations/applicationValidations.js";
-import validateObjectIdParam from "../middlewares/validateObjectId.js";
-import validate from "../middlewares/validate.js";
+} from '../validations/applicationValidations.js';
+import validateObjectIdParam from '../middlewares/validateObjectId.js';
+import validate from '../middlewares/validate.js';
 
 const applicationRoutes = Router();
 
 // /api/v1/applications/applicant
 applicationRoutes.get(
-  "/applicant",
+  '/applicant',
   authenticateUser,
-  authorizeRoles("user"),
+  authorizeRoles('user'),
   getCandidateApplicationsCtrl,
 );
 
 // /api/v1/applications/apply
 applicationRoutes.post(
-  "/apply",
+  '/apply',
   authenticateUser,
-  authorizeRoles("user"),
+  authorizeRoles('user'),
   validate(validateApplyInJob),
   applyInJobCtrl,
 );
 
 // /api/v1/applications/recruiter
 applicationRoutes.get(
-  "/recruiter",
+  '/recruiter',
   authenticateUser,
-  authorizeRoles("recruiter"),
+  authorizeRoles('recruiter'),
   getRecruiterJobsApplicationsCtrl,
 );
 
 // /api/v1/applications/:id
 applicationRoutes.patch(
-  "/:id",
-  validateObjectIdParam("id"),
+  '/:id',
+  validateObjectIdParam('id'),
   authenticateUser,
-  authorizeRoles("recruiter"),
+  authorizeRoles('recruiter'),
   validate(validateUpdateApplication),
   updateApplicationStatusCtrl,
 );

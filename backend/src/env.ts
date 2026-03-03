@@ -46,7 +46,7 @@ const runtime = z.object({
 const envSchema = base.extend(runtime.shape).refine(
   (data) => {
     // If not running tests, require real-service credentials/URIs
-    if (data.NODE_ENV === 'test') return true;
+    if (process.env.NODE_ENV === 'test') return true;
 
     const hasMongo =
       typeof data.MONGO_URI === 'string' && data.MONGO_URI.length > 0;

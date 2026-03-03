@@ -1,6 +1,5 @@
 module.exports = [
   {
-    // apply to TS and JS files
     files: ['**/*.ts', '**/*.js'],
 
     languageOptions: {
@@ -8,16 +7,19 @@ module.exports = [
       parserOptions: {
         ecmaVersion: 2024,
         sourceType: 'module',
-        // remove `project` for faster lint
-        // project: ['./tsconfig.json'],
+        // project: ['./tsconfig.json'], // only for type-aware rules (slower)
       },
     },
 
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      prettier: require('eslint-plugin-prettier'),
     },
 
     rules: {
+      // Prettier: report formatting issues as ESLint problems
+      'prettier/prettier': ['error'],
+
       // sensible defaults
       'no-console': 'warn',
       'no-unused-vars': 'off',
@@ -29,6 +31,7 @@ module.exports = [
       'prefer-const': 'warn',
     },
 
-    ignores: ['dist/**', 'node_modules/**'],
+    // ignore these globs when linting
+    ignores: ['dist/**', 'node_modules/**', 'frontend/**'],
   },
 ];

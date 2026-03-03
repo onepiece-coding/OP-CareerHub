@@ -37,7 +37,13 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'img-src': ["'self'", 'data:', 'blob:', 'res.cloudinary.com', 'cdn.pixabay.com'],
+        'img-src': [
+          "'self'",
+          'data:',
+          'blob:',
+          'res.cloudinary.com',
+          'cdn.pixabay.com',
+        ],
         'connect-src': [
           "'self'",
           env.CLIENT_DOMAIN ?? "'self'",
@@ -78,7 +84,7 @@ app.use(cookieParser(env.COOKIE_SECRET ?? undefined));
 // Routes
 app.use('/api/v1', rootRouter);
 
-if (process.env.NODE_ENV === 'production') {
+if (env.NODE_ENV === 'production') {
   // Express serve static files (html, css, js, ...)
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
 

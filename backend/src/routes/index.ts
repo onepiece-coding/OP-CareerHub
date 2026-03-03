@@ -11,7 +11,7 @@ const rootRouter: Router = Router();
 
 rootRouter.use('/admin', adminRoutes);
 rootRouter.use('/auth', authRoutes);
-rootRouter.use('/notification', notificationRoutes);
+rootRouter.use('/notifications', notificationRoutes);
 rootRouter.use('/password', passwordRoutes);
 rootRouter.use('/applications', applicationRoutes);
 rootRouter.use('/jobs', jobRoutes);

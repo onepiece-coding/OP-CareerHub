@@ -152,13 +152,15 @@ export const resumeUploadCtrl = asyncHandler(
 
     const user = await User.findById(req.user.id);
 
-    if (user!.resume.publicId !== null) {
+    if (!user) throw createError(404, 'User not found');
+
+    if (user.resume.publicId !== null) {
       await removePDF(user!.resume.publicId);
     }
 
-    user!.resume = resume;
+    user.resume = resume;
 
-    await user!.save();
+    await user.save();
 
     res.status(200).json({
       message: 'your resume uploaded successfully',
@@ -194,13 +196,15 @@ export const profilePhotoUploadCtrl = asyncHandler(
 
     const user = await User.findById(req.user.id);
 
-    if (user!.profilePhoto.publicId !== null) {
+    if (!user) throw createError(404, 'User not found');
+
+    if (user.profilePhoto.publicId !== null) {
       await removeImage(user!.profilePhoto.publicId);
     }
 
-    user!.profilePhoto = profilePhoto;
+    user.profilePhoto = profilePhoto;
 
-    await user!.save();
+    await user.save();
 
     res.status(200).json({
       message: 'your profile photo uploaded successfully',
