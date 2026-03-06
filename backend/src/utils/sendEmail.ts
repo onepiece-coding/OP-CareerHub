@@ -9,9 +9,6 @@ type EmailPayload = {
 };
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
-const BREVO_API_KEY = env.BREVO_API_KEY ?? undefined;
-const DEFAULT_FROM = env.FROM_EMAIL ?? env.APP_EMAIL_ADDRESS;
-const DEFAULT_TIMEOUT_MS = Number(env.EMAIL_TIMEOUT_MS ?? 10000);
 
 /**
  * Minimal timeout wrapper around fetch.
@@ -20,7 +17,7 @@ const DEFAULT_TIMEOUT_MS = Number(env.EMAIL_TIMEOUT_MS ?? 10000);
 async function timeoutFetch(
   input: RequestInfo,
   init: RequestInit = {},
-  timeout = DEFAULT_TIMEOUT_MS,
+  timeout: number,
   fetchFn: (
     input: RequestInfo,
     init?: RequestInit,
@@ -34,9 +31,19 @@ async function timeoutFetch(
     const res = await fetchFn(input, { ...init, signal: ac.signal });
     return res;
   } finally {
-    // ensure we always clear the timeout (cleanup)
     clearTimeout(id);
   }
+}
+
+/** Read config at call-time so tests can mutate env dynamically */
+function getConfig() {
+  return {
+    NODE_ENV: env.NODE_ENV,
+    BREVO_API_KEY: env.BREVO_API_KEY ?? undefined,
+    DEFAULT_FROM: env.FROM_EMAIL ?? env.APP_EMAIL_ADDRESS,
+    DEFAULT_TIMEOUT_MS: Number(env.EMAIL_TIMEOUT_MS ?? 10000),
+    APP_NAME: env.APP_NAME ?? 'op-careerhub',
+  };
 }
 
 /**
@@ -52,8 +59,10 @@ export async function sendEmail(
   { to, subject, html, from }: EmailPayload,
   fetchFn?: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 ): Promise<any> {
+  const cfg = getConfig();
+
   // Test mode: allow tests to avoid real network calls
-  if (env.NODE_ENV === 'test' && !BREVO_API_KEY) {
+  if (cfg.NODE_ENV === 'test' && !cfg.BREVO_API_KEY) {
     logger.info(
       'sendEmail: test env without BREVO_API_KEY — returning mock response',
     );
@@ -65,7 +74,7 @@ export async function sendEmail(
     };
   }
 
-  if (!BREVO_API_KEY) {
+  if (!cfg.BREVO_API_KEY) {
     // In non-test runtime we require a configured Brevo key
     throw new Error(
       'Email provider not configured. Set BREVO_API_KEY (or run tests with NODE_ENV=test).',
@@ -74,8 +83,8 @@ export async function sendEmail(
 
   const payload = {
     sender: {
-      email: from ?? DEFAULT_FROM,
-      name: env.APP_NAME ?? 'op-careerhub',
+      email: from ?? cfg.DEFAULT_FROM,
+      name: cfg.APP_NAME,
     },
     to: [{ email: to }],
     subject,
@@ -90,11 +99,11 @@ export async function sendEmail(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': BREVO_API_KEY,
+          'api-key': cfg.BREVO_API_KEY,
         },
         body: JSON.stringify(payload),
       },
-      DEFAULT_TIMEOUT_MS,
+      cfg.DEFAULT_TIMEOUT_MS,
       fetchFn,
     );
   } catch (networkErr: any) {
