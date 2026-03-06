@@ -1,48 +1,117 @@
-# JobSearch
-Job Search est le sujet de mon Projet de Fin d'Études (PFE) et a été développé en utilisant la MERN Stack (MongoDB, Express.js, React, Node.js). Cette plateforme web vise à révolutionner le processus de recrutement en offrant une solution intelligente et efficace pour connecter les entreprises avec des talents qualifiés.
+# CareerHub
 
+CareerHub is a **full-stack job management platform** that allows users
+to apply for jobs, recruiters to manage listings, and administrators to
+oversee the system.
 
-## Install
+The project includes:
 
-This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+- **Backend:** Node.js + Express + TypeScript + MongoDB
+- **Frontend:** _(To be filled by frontend developer)_
+- **Authentication:** JWT with access & refresh tokens
+- **Real-time notifications:** Socket.IO
+- **Email services:** Brevo
+- **File storage:** Cloudinary
+- **Testing:** Vitest
 
-- Clone or download `the project folder` and then unzip the files.
-- go to the root directory of the job-portal client, you can use `cd space folder-name` to change the folder directory.
+---
 
-### For Frontend 
-- follow the command to run the client site: 
+# Table of Contents
 
-```sh
-$ npm install
-```
-```sh
-$ npm run dev
-```
+- Features
+- Architecture
+- Backend Stack
+- Frontend Stack
+- Project Structure
+- Environment Variables
+- Installation
+- Running the Project
+- Testing
+- API Overview
+- Authentication Flow
+- Real-time Notifications
+- File Uploads
+- Deployment
+- Contributors
+- License
 
-### For Backend
-- follow the command to run the server site: 
-```sh
-$ npm install
-```
-```sh
-$ npm run dev or nodemon server.js
-```
-```sh
-$ add a .env file and include the following environment variables
-```
-```
-PORT=
-MONGO_URI=
-ALLOWED_ORIGINS=
-NODE_ENV=
-COOKIE_NAME=
-COOKIE_SECRET=
-JWT_SECRET=
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-# OPENAI_API_KEY=
-OPENAI_API_KEY=
-APP_EMAIL_ADDRESS=
-APP_EMAIL_PASSWORD=
-```
+---
+
+# Features
+
+## Authentication
+
+- User registration
+- Email verification
+- Login with JWT
+- Refresh token rotation
+- Logout with cookie clearing
+- Password reset via email
+
+## User Features
+
+- Update profile
+- Upload profile photo
+- Upload resume (PDF)
+- Apply for jobs
+- Receive notifications
+
+## Recruiter Features
+
+- Create job listings
+- Update job listings
+- Manage applicants
+
+## Admin Features
+
+- View system statistics
+- Manage users
+- Update user roles
+- Delete users
+
+## Notifications
+
+- Real-time notifications using **Socket.IO**
+
+## File Management
+
+- Profile photos uploaded to **Cloudinary**
+- Resumes uploaded as **PDF**
+
+---
+
+# Architecture
+
+Client (Frontend) \| REST API + WebSockets \| Node.js / Express Server
+\| MongoDB (Mongoose ODM) \| External Services - Brevo (Email) -
+Cloudinary (File Storage)
+
+---
+
+# Backend Stack
+
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB
+- Mongoose
+- Zod (validation)
+- JWT
+- Socket.IO
+- Cloudinary
+- Brevo API
+- Vitest (unit testing)
+
+---
+
+# Frontend Stack
+
+_(To be filled by frontend developer)_
+
+---
+
+# Contributors
+
+Backend Developer: Moahamed Bouderya
+
+Frontend Developer: Lahcen Alhiane

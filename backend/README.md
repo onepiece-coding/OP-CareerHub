@@ -49,16 +49,14 @@ Backend for the **op-careerhub** job-search application — Node.js + TypeScript
 1. Clone repo:
 
    ```bash
-   git clone <repo-url>
-   cd op-careerhub-backend
+   git clone git@github.com:onepiece-coding/OP-CareerHub.git
+   cd backend
    ```
 
 2. Install:
 
    ```bash
    npm install
-   # if you hit peer-dep errors with npm 7+, use:
-   # npm install --legacy-peer-deps
    ```
 
 3. Create a .env file (see example below).
@@ -95,8 +93,13 @@ CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 
+BREVO_API_KEY=brevo-key
+FROM_EMAIL=you@example.com
+EMAIL_TIMEOUT_MS=10000
+
+APP_NAME=
+
 APP_EMAIL_ADDRESS=you@example.com
-APP_EMAIL_PASSWORD=<email-password-or-app-password>
 
 Notes
 
@@ -109,14 +112,15 @@ Keep JWT_SECRET and REFRESH_TOKEN_SECRET different and at least 32 characters.
 ## Scripts
 
 {
-"scripts": {
-"dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
+"dev": "cross-env NODE*ENV=development tsx watch src/server.ts",
 "build": "tsc -p tsconfig.build.json",
 "start": "node --enable-source-maps dist/server.js",
-"lint": "eslint \"src/**/\*.{ts,js}\" --fix",
-"format": "prettier --write \"src/**/\*.{ts,js,json,md}\"",
-"test": "vitest",
-"test:watch": "vitest --watch",
-"test:coverage": "vitest --coverage"
-}
+"test": "cross-env NODE_ENV=test vitest run",
+"test:watch": "cross-env NODE_ENV=test vitest",
+"test:coverage": "cross-env NODE_ENV=test vitest run --coverage",
+"test:unit": "cross-env NODE_ENV=test vitest run tests/unit",
+"test:integration": "cross-env NODE_ENV=test vitest run tests/integration",
+"lint": "eslint \"src/**/\*.{ts,js}\"",
+"lint:fix": "eslint \"src/**/*.{ts,js}\" --ext .ts,.js --fix",
+"format": "prettier --write \"src/\*\*/\_.{ts,js,json,md}\""
 }
