@@ -14,7 +14,7 @@
     "test:unit": "cross-env NODE_ENV=test vitest run tests/unit",
     "test:integration": "cross-env NODE_ENV=test vitest run tests/integration",
     "lint": "eslint \"src/**/*.{ts,js}\"",
-    "lint:fix": "eslint \"src/**/*.{ts,js}\" --ext .ts,.js --fix",
+    "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\""
   },
   "author": "Mohamed Bouderya",
