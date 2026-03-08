@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // ----------------- Hoist-safe mocks -----------------
-// mock env so jwt.verify can read a secret (not actually used by our fake verify)
 vi.mock('../../src/env.js', () => {
   return {
     env: {
@@ -10,7 +9,7 @@ vi.mock('../../src/env.js', () => {
   };
 });
 
-// jsonwebtoken mock - default behavior can be overridden in tests by mutating the exported object
+// jsonwebtoken mock
 vi.mock('jsonwebtoken', () => {
   return {
     default: {
@@ -56,7 +55,6 @@ describe('auth middleware', () => {
   });
 
   it('authenticateUser: calls next with 401 when jwt.verify throws (invalid token)', async () => {
-    // jsonwebtoken mock by default throws for tokens other than 'good-token'
     const mod = await import('../../src/middlewares/auth.js');
     const req: any = { cookies: { access_token: 'bad-token' } };
     const res: any = {};
@@ -70,9 +68,9 @@ describe('auth middleware', () => {
   });
 
   it('authenticateUser: calls next with 404 when user not found', async () => {
-    const jwt = (await import('jsonwebtoken')).default;
-    // ensure verify returns payload for this test
-    jwt.verify = (token: string) => ({ id: 'missing-user' });
+    const jwtModule = await import('jsonwebtoken');
+    const jwt = jwtModule.default as any;
+    jwt.verify = (_token: string) => ({ id: 'u1' });
 
     const User = (await import('../../src/models/User.js')).default as any;
     // findById(...).select(...) -> resolves to null to simulate not-found
@@ -94,8 +92,9 @@ describe('auth middleware', () => {
   });
 
   it('authenticateUser: successful verification sets req.user and calls next without error', async () => {
-    const jwt = (await import('jsonwebtoken')).default;
-    jwt.verify = (token: string) => ({ id: 'u1' });
+    const jwtModule = await import('jsonwebtoken');
+    const jwt = jwtModule.default as any;
+    jwt.verify = (_token: string) => ({ id: 'u1' });
 
     const userObj = { _id: 'u1', username: 'alice', role: 'user' };
     const User = (await import('../../src/models/User.js')).default as any;
@@ -113,7 +112,7 @@ describe('auth middleware', () => {
     await mod.authenticateUser(req, res, next);
 
     expect(User.findById).toHaveBeenCalledWith('u1');
-    expect(next).toHaveBeenCalledWith(); // no args -> success
+    expect(next).toHaveBeenCalledWith();
     expect(req.user).toEqual(userObj);
   });
 

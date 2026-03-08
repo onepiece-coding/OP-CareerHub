@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import http from 'http';
 
 // ----------------- Hoist-safe mocks -----------------
 vi.mock('../../src/utils/cloudinary.js', () => {

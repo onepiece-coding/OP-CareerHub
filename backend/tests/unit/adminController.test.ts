@@ -25,7 +25,6 @@ vi.mock('../../src/models/Job.js', () => {
 // ---------- End mocks ----------
 
 beforeEach(() => {
-  // ensure a clean module cache for each test
   vi.resetModules();
 });
 
@@ -35,11 +34,9 @@ afterEach(() => {
 
 describe('adminController (unit)', () => {
   it('getAllInfoCtrl returns aggregated counts for users and jobs', async () => {
-    // Import mocks
     const User = (await import('../../src/models/User.js')).default as any;
     const Job = (await import('../../src/models/Job.js')).default as any;
 
-    // Prepare mock behavior for User.find: behave according to query
     (User.find as any).mockImplementation((q: any) => {
       if (!q || Object.keys(q).length === 0) {
         // all users
@@ -52,7 +49,6 @@ describe('adminController (unit)', () => {
       return Promise.resolve([]);
     });
 
-    // Prepare mock behavior for Job.find
     (Job.find as any).mockImplementation((q: any) => {
       if (!q || Object.keys(q).length === 0) {
         // all jobs
@@ -115,7 +111,7 @@ describe('adminController (unit)', () => {
     };
     const monthlyAgg = [thisMonth, prevMonth];
 
-    // aggregate is called twice: first for status, then for monthly. Use sequential returns.
+    // aggregate is called twice: first for status, then for monthly.
     (Job.aggregate as any)
       .mockResolvedValueOnce(statusAgg) // first call
       .mockResolvedValueOnce(monthlyAgg); // second call
@@ -133,7 +129,6 @@ describe('adminController (unit)', () => {
 
     // read actual call arg
     const payload = res.json.mock.calls[0][0];
-    // defaultStats should map counts correctly
     expect(payload.defaultStats).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: 'pending', value: 5 }),
@@ -147,7 +142,7 @@ describe('adminController (unit)', () => {
     // should contain two entries (we provided two)
     expect(payload.monthly_stats.length).toBe(2);
 
-    // compute expected formatted dates and counts (remember controller reverses result)
+    // compute expected formatted dates and counts
     const formattedThis = dayjs()
       .month(thisMonth._id.month - 1)
       .year(thisMonth._id.year)
@@ -156,7 +151,6 @@ describe('adminController (unit)', () => {
       .month(prevMonth._id.month - 1)
       .year(prevMonth._id.year)
       .format('MMM YY');
-    // because controller reverses to chronological (oldest -> newest), expect prev then this
     expect(payload.monthly_stats[0]).toEqual({
       date: formattedPrev,
       count: prevMonth.count,

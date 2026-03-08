@@ -101,7 +101,7 @@ vi.mock('../../src/models/Notification.js', () => {
 // -------------------- End hoist-safe mocks --------------------
 
 beforeEach(() => {
-  vi.resetModules(); // ensure fresh imports for each test
+  vi.resetModules();
 });
 
 afterEach(() => {
@@ -109,7 +109,6 @@ afterEach(() => {
 });
 
 describe('authController (unit)', () => {
-  // helper to create fresh controller import + find mocks reference
   async function load() {
     const mod = await import('../../src/controllers/authController.js');
     const User = (await import('../../src/models/User.js')).default as any;
@@ -165,8 +164,6 @@ describe('authController (unit)', () => {
     await mod.registerUserCtrl(req, res, next);
 
     expect(User.findOne).toHaveBeenCalledWith({ email: 'bob@test.com' });
-    // new User.save should be called by constructor's save mock when controller calls user.save()
-    // verification token saved
     expect(VT.prototype.save || VT.prototype.save === undefined).toBeDefined();
     expect(sendEmail).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(201);
@@ -226,7 +223,7 @@ describe('authController (unit)', () => {
       role: 'user',
     });
     // comparePassword should return true if provided correct password - ensure it
-    userInst.comparePassword = vi.fn(async (pw: string) => true);
+    userInst.comparePassword = vi.fn(async (_pw: string) => true);
     (User.findOne as any).mockResolvedValue(userInst);
     // no existing verification token -> create new
     (VT.findOne as any).mockResolvedValue(null);
@@ -245,8 +242,7 @@ describe('authController (unit)', () => {
   });
 
   it('loginUserCtrl: verified user gets tokens, cookies, notifications emitted and user returned', async () => {
-    const { mod, User, RefreshToken, Notification, socketSvc, jwtUtils } =
-      await load();
+    const { mod, User, RefreshToken, Notification, socketSvc } = await load();
 
     // prepare user instance
     const userInst: any = new (User as any)({
@@ -312,7 +308,7 @@ describe('authController (unit)', () => {
   });
 
   it('refreshTokenCtrl: valid rotation issues new cookies and returns user', async () => {
-    const { mod, User, RefreshToken, jwtUtils } = await load();
+    const { mod, User, RefreshToken } = await load();
 
     // cookie present
     const rawRefresh = 'old-refresh-token';

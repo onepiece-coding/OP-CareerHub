@@ -200,7 +200,6 @@ describe('application controllers (unit)', () => {
     };
 
     const next = vi.fn();
-    // <-- explicit res stub so TypeScript is happy
     const res: any = { status: vi.fn(), json: vi.fn() };
 
     await mod.applyInJobCtrl(req, res, next);
@@ -232,7 +231,6 @@ describe('application controllers (unit)', () => {
     };
 
     const next = vi.fn();
-    // <-- explicit res stub so TypeScript is happy
     const res: any = { status: vi.fn(), json: vi.fn() };
 
     await mod.applyInJobCtrl(req, res, next);

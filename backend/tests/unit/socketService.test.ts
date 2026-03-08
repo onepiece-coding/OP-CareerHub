@@ -133,7 +133,7 @@ describe('socketService (unit)', () => {
       data: {} as any,
       id: 'socket-1',
       join: vi.fn(),
-      on: vi.fn((ev: string, cb: any) => {}),
+      on: vi.fn((_ev: string, _cb: any) => {}),
       disconnect: vi.fn(),
     };
 

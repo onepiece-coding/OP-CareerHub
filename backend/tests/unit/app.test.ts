@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
-import http from 'http';
 
 // Mock env and routes before importing app
 vi.mock('../../src/env.js', () => {
@@ -13,7 +12,7 @@ vi.mock('../../src/env.js', () => {
   };
 });
 
-// Provide a tiny router to mount at /api/v1 so tests are focused
+// tiny router to mount at /api/v1 so tests are focused
 vi.mock('../../src/routes/index.js', () => {
   const express = require('express');
   const r = express.Router();
@@ -50,7 +49,7 @@ describe('app bootstrap', () => {
     // set the process-level env before re-importing the app
     process.env.TRUST_PROXY = '1';
     vi.resetModules();
-    // re-mock env and routes (vitest reset removes previous mocks)
+    // re-mock env and routes
     vi.mock('../../src/env.js', () => ({
       env: { NODE_ENV: 'development', CLIENT_DOMAIN: 'http://localhost:3000' },
     }));
@@ -68,7 +67,6 @@ describe('app bootstrap', () => {
   });
 
   it('serves static and index in production mode (mount check)', async () => {
-    // we won't check actual file serving — only that code-path for production is set up.
     vi.resetModules();
     vi.mock('../../src/env.js', () => ({
       env: { NODE_ENV: 'production', CLIENT_DOMAIN: 'http://localhost:3000' },
