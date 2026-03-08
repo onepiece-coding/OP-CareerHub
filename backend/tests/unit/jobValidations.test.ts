@@ -14,7 +14,7 @@ describe('jobValidations (unit)', () => {
       jobVacancy: '1',
       jobSalary: '1000',
       jobDeadline: '2026-01-01',
-      jobSkills: '  js, \n\nts, , node  , ', // includes blanks/newlines/extra commas
+      jobSkills: '  js, \n\nts, , node  , ',
       jobFacilities: '',
       jobContact: 'hr@x.com',
     };
@@ -23,7 +23,6 @@ describe('jobValidations (unit)', () => {
     expect(parsed.success).toBe(true);
     if (parsed.success) {
       expect(Array.isArray(parsed.data.jobSkills)).toBe(true);
-      // should contain cleaned items and not include empty strings
       expect(parsed.data.jobSkills).toContain('js');
       expect(parsed.data.jobSkills).toContain('ts');
       expect(parsed.data.jobSkills).toContain('node');
@@ -81,8 +80,6 @@ describe('jobValidations (unit)', () => {
     }
   });
 
-  // --- Fixed: ensure required fields are present and long enough ---
-
   it('parses jobSkills from a comma/newline string and trims/filters blanks', () => {
     const dto = {
       company: 'Company XYZ',
@@ -117,7 +114,7 @@ describe('jobValidations (unit)', () => {
       jobVacancy: '2',
       jobSalary: '2500',
       jobDeadline: '2026-02-02',
-      jobSkills: [1, 'two', null, undefined], // numbers and null/undefined -> strings / filtered
+      jobSkills: [1, 'two', null, undefined],
       jobFacilities: [0, 'health'],
       jobContact: 'hr@y.com',
     };
@@ -142,7 +139,7 @@ describe('jobValidations (unit)', () => {
       jobVacancy: '1',
       jobSalary: '1',
       jobDeadline: '2026-03-03',
-      jobSkills: 12345, // not string nor array -> preprocess returns []
+      jobSkills: 12345,
       jobFacilities: null,
       jobContact: 'hr@z.com',
     };
@@ -183,7 +180,7 @@ describe('jobValidations (unit)', () => {
       jobDeadline: '1',
       jobSkills: [],
       jobFacilities: [],
-      jobContact: '', // fails min(1)
+      jobContact: '',
     };
 
     const res = validateAddJob.safeParse(bad);

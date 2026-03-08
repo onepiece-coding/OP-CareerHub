@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // ----------------- Hoist-safe mocks -----------------
-// mock env so controllers can build links
 vi.mock('../../src/env.js', () => {
   return {
     env: {
@@ -27,7 +26,7 @@ vi.mock('../../src/models/User.js', () => {
   };
 });
 
-// Mock VerificationToken: we need both static methods (findOne, deleteOne) and a constructor
+// Mock VerificationToken: need both static methods (findOne, deleteOne) and a constructor
 vi.mock('../../src/models/VerificationToken.js', () => {
   class MockVerificationToken {
     userId: any;
@@ -98,12 +97,7 @@ describe('password controllers (unit)', () => {
 
     await mod.sendResetPasswordLinkCtrl(req, res, next);
 
-    // a new VerificationToken instance should have been created (constructor called)
-    // our mock is a function; ensure static findOne was called then instance.save executed
     expect(VerificationToken.findOne).toHaveBeenCalled();
-    // instance.save is a property on the constructed object; check that at least one instance.save was called
-    // Because the constructor returns an instance with save mocked, we can't directly access the instance here,
-    // but we can assert sendEmail was called (indirect evidence new token was created and used).
     expect(sendEmail).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
     const payload = res.json.mock.calls[0][0];

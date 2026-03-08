@@ -34,8 +34,7 @@ describe('env module', () => {
     // Set to production mode
     process.env.NODE_ENV = 'production';
 
-    // Keep JWT secrets (the refine expects them too) OR you can omit them —
-    // the refine requires multiple things; we ensure some required items are missing.
+    // Keep JWT secrets (we can omit them as well)
     process.env.JWT_SECRET = 'x'.repeat(32);
     process.env.REFRESH_TOKEN_SECRET = 'y'.repeat(32);
 
@@ -46,7 +45,6 @@ describe('env module', () => {
     delete process.env.CLOUDINARY_API_SECRET;
     delete process.env.FROM_EMAIL;
     delete process.env.BREVO_API_KEY;
-    // (If your CI has other env keys that could satisfy the refine, delete those too.)
 
     // importing the module should fail validation and reject
     await expect(import('../../src/env.js')).rejects.toThrow(

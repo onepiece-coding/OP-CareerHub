@@ -13,8 +13,7 @@ vi.mock('../../src/env.js', () => {
   };
 });
 
-// Mock jsonwebtoken - we'll control verify() behavior
-// use any-typed functions to avoid TypeScript signature complaints when we override later
+// Mock jsonwebtoken - to control verify() behavior
 vi.mock('jsonwebtoken', () => {
   return {
     default: {
@@ -29,7 +28,7 @@ vi.mock('jsonwebtoken', () => {
   };
 });
 
-// Mock logger so we can spy on warn/info calls
+// Mock logger to spy on warn/info calls
 vi.mock('../../src/utils/logger.js', () => {
   return {
     default: {
@@ -41,7 +40,7 @@ vi.mock('../../src/utils/logger.js', () => {
   };
 });
 
-// Mock socket.io Server. We export __instances to inspect them from tests.
+// Mock socket.io Server.
 vi.mock('socket.io', () => {
   const instances: any[] = [];
 
@@ -56,7 +55,7 @@ vi.mock('socket.io', () => {
       instances.push(this);
     }
 
-    // socket.io API surface used by your module
+    // socket.io API surface
     use(fn: Function) {
       this.middlewares.push(fn);
     }
@@ -90,7 +89,7 @@ vi.mock('socket.io', () => {
 // --------- End mocks ---------
 
 beforeEach(() => {
-  // reset module state so each test gets a fresh instance of socketService
+  // reset module state
   vi.resetModules();
 });
 
@@ -192,15 +191,11 @@ describe('socketService (unit)', () => {
     expect(String(gotErr.message)).toContain('Authentication error');
   });
 
-  // ----------------------------
-  // New tests added to cover error and branch paths
-  // ----------------------------
-
   it('middleware returns server misconfiguration when JWT_SECRET missing', async () => {
     // ensure fresh modules
     vi.resetModules();
 
-    // mutate env export before importing socketService — cast to any to avoid TS complaints
+    // mutate env export before importing socketService
     const envMod = (await import('../../src/env.js')) as any;
     envMod.env.JWT_SECRET = undefined;
 
@@ -227,7 +222,6 @@ describe('socketService (unit)', () => {
   });
 
   it('middleware fails when jwt.verify returns an object without id (invalid token payload)', async () => {
-    // jwt mock is hoisted; obtain it and override verify to return {}
     const jwt = (await import('jsonwebtoken')) as any;
     jwt.default.verify = (..._args: any[]) => ({}) as any;
 
@@ -265,7 +259,7 @@ describe('socketService (unit)', () => {
       throw new Error('boom');
     };
 
-    // ensure env present so middleware executes and we hit the catch block
+    // ensure env present so middleware executes and hit the catch block
     const envMod = (await import('../../src/env.js')) as any;
     envMod.env.JWT_SECRET = 'test_jwt_secret_which_is_long_enough_123456';
 
@@ -354,10 +348,6 @@ describe('socketService (unit)', () => {
     // after disconnect there may be no entry for user-1
     expect(listConnectedUsers()['user-1'] || 0).toBe(0);
   });
-
-  // ----------------------------
-  // end of new tests
-  // ----------------------------
 
   it('sendNotification warns when io not initialized and emits when initialized', async () => {
     // import sendNotification from a fresh module (io initially null)

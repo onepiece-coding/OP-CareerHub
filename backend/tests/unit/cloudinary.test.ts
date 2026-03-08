@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import stream from 'stream';
 
-// import the module under test
+// import the module
 import * as cloud from '../../src/utils/cloudinary.js';
 
 beforeEach(() => {
@@ -22,7 +22,7 @@ describe('cloudinary utils (unit)', () => {
       return pass as unknown as NodeJS.WritableStream;
     };
 
-    const fakeClient = {}; // not used when we pass uploaderFactory
+    const fakeClient = {};
     const res = await cloud.uploadBufferToCloudinary(
       Buffer.from('hello'),
       { folder: 'test' },
@@ -59,7 +59,7 @@ describe('cloudinary utils (unit)', () => {
       cb: (err?: any, res?: any) => void,
     ) => {
       const pass = new stream.PassThrough();
-      process.nextTick(() => cb(undefined, undefined)); // empty response
+      process.nextTick(() => cb(undefined, undefined));
       return pass as unknown as NodeJS.WritableStream;
     };
 
@@ -88,14 +88,14 @@ describe('cloudinary utils (unit)', () => {
       },
     } as any;
 
-    // Call the real wrapper (no spying) — this exercises the integration of wrapper -> uploader stream
+    // Call the real wrapper (no spying)
     const res = await cloud.uploadImageBuffer(
       Buffer.from('img'),
       { folder: 'users' },
       fakeClient,
     );
     expect(res).toHaveProperty('public_id', 'p');
-    // We can additionally assert that returned secure_url exists
+    // Additionally assert that returned secure_url exists
     expect(res.secure_url).toBe('u');
   });
 

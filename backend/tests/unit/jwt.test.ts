@@ -1,9 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Hoist-safe mocks: create the env object inside the factory so vitest can hoist vi.mock safely.
+// Hoist-safe mocks
 vi.mock('../../src/env.js', () => {
-  // Use relatively short secrets for tests — they must be at least 32 chars per your env schema,
-  // so supply valid-length values to avoid runtime errors in other modules if they import env.
   const env = {
     NODE_ENV: 'test',
     JWT_SECRET: 'a_very_long_test_jwt_secret_which_is_secure_123456',
@@ -15,7 +13,6 @@ vi.mock('../../src/env.js', () => {
   return { env };
 });
 
-// Now import the module under test (after mocks have been registered)
 import {
   signAccessToken,
   verifyAccessToken,
@@ -71,7 +68,6 @@ describe('jwt utils', () => {
     const accessPayload = { id: 'u1', role: 'admin' };
     const aToken = signAccessToken(accessPayload);
     const aDecoded = verifyAccessToken(aToken);
-    // these are the fields we expect; jwt library may include iat/exp when decoded
     expect(aDecoded.id).toBe('u1');
     expect(aDecoded.role).toBe('admin');
 

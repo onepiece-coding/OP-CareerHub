@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 
-// hoist-safe mocks: factory creates the mocks inside the factory so vitest can hoist vi.mock safely
+// hoist-safe mocks
 vi.mock('../../src/utils/logger.js', () => {
   return {
     default: {
@@ -10,8 +10,6 @@ vi.mock('../../src/utils/logger.js', () => {
   };
 });
 
-// Create a stable env object inside the mock factory so tests can import and mutate it later.
-// Important: do NOT reference external variables from the factory (hoisting rules).
 vi.mock('../../src/env.js', () => {
   return {
     // Provide a mutable env object that matches the shape used by sendEmail.getConfig()
@@ -26,7 +24,7 @@ vi.mock('../../src/env.js', () => {
   };
 });
 
-// Now import the modules under test (after mocks are registered)
+// import the modules under test (after mocks are registered)
 import logger from '../../src/utils/logger.js';
 import { env } from '../../src/env.js';
 import { sendEmail } from '../../src/utils/sendEmail.js';

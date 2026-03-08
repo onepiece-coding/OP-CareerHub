@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 
-// vi.mock is hoisted; create the mocked fn(s) inside the factory
+// vi.mock is hoisted
 vi.mock('../../src/utils/logger', () => {
   return {
     default: {
@@ -12,7 +12,7 @@ vi.mock('../../src/utils/logger', () => {
   };
 });
 
-// Import module under test after mocking
+// Import after mocking
 import connectToDB from '../../src/config/connectToDb.js';
 import logger from '../../src/utils/logger.js';
 

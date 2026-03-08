@@ -15,7 +15,7 @@ vi.mock('jsonwebtoken', () => {
     default: {
       verify: (token: string) => {
         if (token === 'good-token') return { id: 'u1' };
-        // default: throw for any other token (simulates invalid token)
+        // default: throw for any other token
         throw new Error('invalid token');
       },
     },

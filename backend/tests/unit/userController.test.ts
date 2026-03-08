@@ -382,15 +382,15 @@ describe('user controllers (unit)', () => {
     cloud.removeMultiplePDFs.mockResolvedValueOnce({ result: 'ok' });
 
     // Application.countDocuments for regular users and recruiters
-    Application.countDocuments.mockResolvedValueOnce(2); // regularApplicationsCount
+    Application.countDocuments.mockResolvedValueOnce(2);
     // Job.find for recruiters -> return jobs
     const recruiterJobs = [{ _id: 'j1' }, { _id: 'j2' }];
     (Job.find as any).mockResolvedValueOnce(recruiterJobs);
-    Application.countDocuments.mockResolvedValueOnce(4); // recruiterApplicationsCount
+    Application.countDocuments.mockResolvedValueOnce(4);
 
     // deleteMany operations
-    Application.deleteMany.mockResolvedValueOnce({ deletedCount: 6 }); // delete applicant applications
-    Application.deleteMany.mockResolvedValueOnce({ deletedCount: 4 }); // delete jobs' applications
+    Application.deleteMany.mockResolvedValueOnce({ deletedCount: 6 });
+    Application.deleteMany.mockResolvedValueOnce({ deletedCount: 4 });
     Job.deleteMany.mockResolvedValueOnce({ deletedCount: 2 });
     Notification.deleteMany.mockResolvedValueOnce({ deletedCount: 7 });
     User.deleteMany.mockResolvedValueOnce({ deletedCount: 2 });

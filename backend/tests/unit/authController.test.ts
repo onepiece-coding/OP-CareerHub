@@ -34,7 +34,7 @@ vi.mock('../../src/utils/jwt.js', () => {
     signAccessToken: vi.fn(() => 'signed-access-token'),
     signRefreshToken: vi.fn(() => 'signed-refresh-token'),
     verifyRefreshToken: vi.fn((token: string) => {
-      // default behavior (can override per test)
+      // default behavior
       if (token === 'invalid') throw new Error('invalid');
       return { id: 'user-id', tokenId: 'tid', role: 'user' };
     }),
@@ -98,7 +98,7 @@ vi.mock('../../src/models/Notification.js', () => {
     },
   };
 });
-// -------------------- End hoist-safe mocks --------------------
+// -------------------- End mocks --------------------
 
 beforeEach(() => {
   vi.resetModules();
@@ -190,7 +190,7 @@ describe('authController (unit)', () => {
     expect(next).toHaveBeenCalled();
     const err = next.mock.calls[0][0];
     expect(err).toBeInstanceOf(Error);
-    // message likely 'User already exists!'
+    // message 'User already exists!'
     expect(String(err.message)).toMatch(/User already exists/i);
   });
 
@@ -314,8 +314,8 @@ describe('authController (unit)', () => {
     const rawRefresh = 'old-refresh-token';
     const req = { cookies: { refresh_token: rawRefresh } } as any;
 
-    // verifyRefreshToken should return payload (mocked at top)
-    // find stored token -> return instance-like object with deleteOne + revoked false + expiresAt future
+    // verifyRefreshToken should return payload
+    // return instance-like object with deleteOne + revoked false + expiresAt future
     const stored = {
       tokenHash: 'whatever',
       revoked: false,
@@ -356,7 +356,7 @@ describe('authController (unit)', () => {
     const next = vi.fn();
     await mod.logoutCtrl(req, res, next);
 
-    // RefreshToken.deleteOne should be invoked with tokenHash computed from raw; we mocked deleteOne - ensure it was called
+    // RefreshToken.deleteOne should be invoked with tokenHash computed from raw
     expect(RefreshToken.deleteOne).toHaveBeenCalled();
     expect(res.clearCookie).toHaveBeenCalledTimes(2);
     expect(res.status).toHaveBeenCalledWith(200);
