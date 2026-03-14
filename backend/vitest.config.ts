@@ -5,7 +5,10 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
-    include: ['tests/unit/**/*.test.{ts,js}'],
+    include: [
+      'tests/unit/**/*.test.{ts,js}',
+      'tests/integration/**/*.test.{ts,js}',
+    ],
     exclude: ['node_modules/**', 'dist/**', 'coverage/**', 'frontend/**'],
     coverage: {
       provider: 'v8',

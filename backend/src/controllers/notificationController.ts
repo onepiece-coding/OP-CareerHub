@@ -34,7 +34,7 @@ export const markNotificationAsReadCtrl = asyncHandler(
       const notification = await Notification.findOneAndUpdate(
         { _id: req.params.id, recipient: req.user?._id },
         { read: true },
-        { new: true },
+        { returnDocument: 'after' },
       );
 
       res.status(200).json({

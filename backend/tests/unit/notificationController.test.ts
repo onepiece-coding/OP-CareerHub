@@ -65,7 +65,7 @@ describe('notification controllers (unit)', () => {
     expect(Notification.findOneAndUpdate).toHaveBeenCalledWith(
       { _id: 'n1', recipient: 'u1' },
       { read: true },
-      { new: true },
+      { returnDocument: 'after' },
     );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(

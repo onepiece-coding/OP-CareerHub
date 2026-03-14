@@ -168,6 +168,15 @@ export const updateSingleJobCtrl = asyncHandler(
       throw createError(404, 'Job not found!');
     }
 
+    // Ownership check: allow owner or admin
+    const requesterId = req.user?._id?.toString();
+    const ownerId =
+      (job.createdBy as any)?.toString?.() ?? String(job.createdBy);
+    const isAdmin = req.user?.role === 'admin';
+    if (!isAdmin && ownerId !== requesterId) {
+      throw createError(403, 'You do not have permission to update this job');
+    }
+
     if (
       Object.prototype.hasOwnProperty.call(req.body, 'jobStatus') &&
       job.jobStatus === req.body.jobStatus
@@ -176,7 +185,7 @@ export const updateSingleJobCtrl = asyncHandler(
     }
 
     const updatedJob = await Job.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
     });
 
     const applications = await Application.find({
@@ -190,11 +199,12 @@ export const updateSingleJobCtrl = asyncHandler(
       relatedId: updatedJob!._id,
     }));
 
-    await Notification.insertMany(notifications);
-
-    notifications.forEach((notification: any) => {
-      sendNotification(notification.recipient, notification);
-    });
+    if (notifications.length > 0) {
+      await Notification.insertMany(notifications);
+      notifications.forEach((notification: any) => {
+        sendNotification(notification.recipient, notification);
+      });
+    }
 
     res.status(200).json({
       status: true,
@@ -213,19 +223,28 @@ export const updateSingleJobCtrl = asyncHandler(
 export const deleteSingleJobCtrl = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const isJobExists = await Job.findOne({ _id: id });
-    if (!isJobExists) {
+    const job = await Job.findOne({ _id: id });
+    if (!job) {
       throw createError(404, 'Job not Found!');
-    } else {
-      await Application.deleteMany({ jobId: id });
-      const result = await Job.findByIdAndDelete(id);
-
-      res.status(200).json({
-        status: true,
-        message: 'Job deleted',
-        result,
-      });
     }
+
+    // Ownership check: allow owner or admin
+    const requesterId = req.user?._id?.toString();
+    const ownerId =
+      (job.createdBy as any)?.toString?.() ?? String(job.createdBy);
+    const isAdmin = req.user?.role === 'admin';
+    if (!isAdmin && ownerId !== requesterId) {
+      throw createError(403, 'You do not have permission to delete this job');
+    }
+
+    await Application.deleteMany({ jobId: id });
+    const result = await Job.findByIdAndDelete(id);
+
+    res.status(200).json({
+      status: true,
+      message: 'Job deleted',
+      result,
+    });
   },
 );
 

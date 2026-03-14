@@ -212,9 +212,13 @@ describe('job controllers (unit)', () => {
     expect(String(next0.mock.calls[0][0].message)).toMatch(/Job not found/i);
 
     // nothing to update (jobStatus same)
-    const jobBefore = { _id: 'j2', jobStatus: 'open' };
+    const jobBefore = { _id: 'j2', jobStatus: 'open', createdBy: 'rec1' };
     (Job.findOne as any).mockResolvedValueOnce(jobBefore);
-    const req1: any = { params: { id: 'j2' }, body: { jobStatus: 'open' } };
+    const req1: any = {
+      params: { id: 'j2' },
+      body: { jobStatus: 'open' },
+      user: { _id: 'rec1' },
+    };
     const res1: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
     const next1 = vi.fn();
     await mod.updateSingleJobCtrl(req1, res1, next1);
@@ -228,6 +232,7 @@ describe('job controllers (unit)', () => {
     (Job.findOne as any).mockResolvedValueOnce({
       _id: 'j3',
       jobStatus: 'open',
+      createdBy: 'rec2',
     });
     (Job.findByIdAndUpdate as any).mockResolvedValueOnce(updatedJob);
 
@@ -243,7 +248,11 @@ describe('job controllers (unit)', () => {
       { recipient: 'a2' },
     ]);
 
-    const req2: any = { params: { id: 'j3' }, body: { jobStatus: 'closed' } };
+    const req2: any = {
+      params: { id: 'j3' },
+      body: { jobStatus: 'closed' },
+      user: { _id: 'rec2' },
+    };
     const res2: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
 
     await mod.updateSingleJobCtrl(req2, res2, vi.fn());
@@ -277,11 +286,14 @@ describe('job controllers (unit)', () => {
     expect(String(next0.mock.calls[0][0].message)).toMatch(/Job not Found/i);
 
     // success deletion
-    (Job.findOne as any).mockResolvedValueOnce({ _id: 'jdel' });
+    (Job.findOne as any).mockResolvedValueOnce({
+      _id: 'jdel',
+      createdBy: 'recDel',
+    });
     (Application.deleteMany as any).mockResolvedValueOnce({ deletedCount: 3 });
     (Job.findByIdAndDelete as any).mockResolvedValueOnce({ _id: 'jdel' });
 
-    const req1: any = { params: { id: 'jdel' } };
+    const req1: any = { params: { id: 'jdel' }, user: { _id: 'recDel' } };
     const res1: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
 
     await mod.deleteSingleJobCtrl(req1, res1, vi.fn());

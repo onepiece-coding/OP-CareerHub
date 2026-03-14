@@ -203,7 +203,7 @@ describe('adminController (unit)', () => {
     expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
       { _id: validId },
       { $set: { role: 'recruiter' } },
-      { new: true },
+      { returnDocument: 'after' },
     );
 
     expect(res.status).toHaveBeenCalledWith(200);

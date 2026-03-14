@@ -119,7 +119,7 @@ export const updateUserRoleCtrl = asyncHandler(
       { _id: id },
       { $set: { role } },
       {
-        new: true,
+        returnDocument: 'after',
       },
     );
 

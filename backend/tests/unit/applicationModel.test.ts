@@ -1,18 +1,18 @@
 import { beforeAll, afterAll, beforeEach, describe, it, expect } from 'vitest';
 import mongoose from 'mongoose';
-import { connectTestDB, clearTestDB, closeTestDB } from '../test-mongo.js';
+import { startTestDB, clearDB, stopTestDB } from '../helpers/db.js';
 import { APP_STATUS } from '../../src/utils/constants.js';
 
 beforeAll(async () => {
-  await connectTestDB();
+  await startTestDB();
 });
 
 afterAll(async () => {
-  await closeTestDB();
+  await stopTestDB();
 });
 
 beforeEach(async () => {
-  await clearTestDB();
+  await clearDB();
 });
 
 describe('Application model', () => {

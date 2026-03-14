@@ -185,7 +185,7 @@ export const updateApplicationStatusCtrl = asyncHandler(
     const updatedApplication = await Application.findByIdAndUpdate(
       id,
       { status: req.body.status },
-      { new: true },
+      { returnDocument: 'after' },
     );
 
     const notification = await Notification.create({
