@@ -81,7 +81,7 @@ export const registerUserCtrl = asyncHandler(
     await verificationToken.save();
 
     // Making the link
-    const link = `${env.CLIENT_DOMAIN}/users/${user._id}/verify/${verificationToken.token}`;
+    const link = `${env.CLIENT_DOMAIN}/op-career-hub/users/${user._id}/verify/${verificationToken.token}`;
 
     // Putting the link itno an html template
     const htmlTemplate = `
@@ -136,7 +136,7 @@ export const loginUserCtrl = asyncHandler(
         await verificationToken.save();
       }
 
-      const link = `${env.CLIENT_DOMAIN}/users/${user._id}/verify/${verificationToken.token}`;
+      const link = `${env.CLIENT_DOMAIN}/op-career-hub/users/${user._id}/verify/${verificationToken.token}`;
 
       const htmlTemplate = `
       <div>

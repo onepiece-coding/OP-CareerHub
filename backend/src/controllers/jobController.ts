@@ -177,12 +177,12 @@ export const updateSingleJobCtrl = asyncHandler(
       throw createError(403, 'You do not have permission to update this job');
     }
 
-    if (
-      Object.prototype.hasOwnProperty.call(req.body, 'jobStatus') &&
-      job.jobStatus === req.body.jobStatus
-    ) {
-      throw createError(400, 'Nothing to update!');
-    }
+    // if (
+    //   Object.prototype.hasOwnProperty.call(req.body, 'jobStatus') &&
+    //   job.jobStatus === req.body.jobStatus
+    // ) {
+    //   throw createError(400, 'Nothing to update!');
+    // }
 
     const updatedJob = await Job.findByIdAndUpdate(id, data, {
       returnDocument: 'after',

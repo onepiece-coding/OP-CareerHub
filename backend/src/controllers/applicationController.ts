@@ -186,7 +186,7 @@ export const updateApplicationStatusCtrl = asyncHandler(
       id,
       { status: req.body.status },
       { returnDocument: 'after' },
-    );
+    ).populate('jobId');
 
     const notification = await Notification.create({
       recipient: updatedApplication!.applicantId,
