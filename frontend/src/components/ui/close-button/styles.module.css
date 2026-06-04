@@ -1,0 +1,45 @@
+/**
+ * @file src/components/ui/close-button/styles.module.css
+ */
+
+.btn-close-primary {
+  --btn-close-color: var(--primary-text-color);
+}
+
+.btn-close-secondary {
+  --btn-close-color: var(--secondary-text-color);
+}
+
+.btn-close-success {
+  --btn-close-color: var(--success-text-color);
+}
+
+.btn-close-danger {
+  --btn-close-color: var(--danger-text-color);
+}
+
+.btn-close-warning {
+  --btn-close-color: var(--warning-text-color);
+}
+
+.btn-close-info {
+  --btn-close-color: var(--info-text-color);
+}
+
+.btn-close-light {
+  --btn-close-color: var(--light-text-color);
+}
+
+.btn-close-dark {
+  --btn-close-color: var(--dark-text-color);
+}
+
+.btn-close {
+  border-radius: var(--radius-sm);
+  color: var(--btn-close-color);
+  background: transparent;
+  padding: var(--space-1);
+  cursor: pointer;
+  height: 2em;
+  border: 0;
+}

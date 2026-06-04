@@ -1,0 +1,14 @@
+/**
+ * @file src/components/ui/card/card-footer/styles.module.css
+ */
+
+.card-footer {
+  margin-top: var(--space-4);
+}
+
+/* Responsive */
+/* @media (max-width: 480px) {
+  .card-footer {
+    margin-top: var(--space-4);
+  }
+} */

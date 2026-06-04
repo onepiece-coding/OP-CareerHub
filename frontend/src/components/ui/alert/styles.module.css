@@ -1,0 +1,61 @@
+/**
+ * @file src/components/ui/alert/styles.module.css
+ */
+
+.alert-primary {
+  --alert-color: var(--primary-text-color);
+  --alert-border: var(--primary-border);
+  --alert-bg: var(--primary-bg-color);
+}
+
+.alert-secondary {
+  --alert-color: var(--secondary-text-color);
+  --alert-border: var(--secondary-border);
+  --alert-bg: var(--secondary-bg-color);
+}
+
+.alert-success {
+  --alert-color: var(--success-text-color);
+  --alert-border: var(--success-border);
+  --alert-bg: var(--success-bg-color);
+}
+
+.alert-danger {
+  --alert-color: var(--danger-text-color);
+  --alert-border: var(--danger-border);
+  --alert-bg: var(--danger-bg-color);
+}
+
+.alert-warning {
+  --alert-color: var(--warning-text-color);
+  --alert-border: var(--warning-border);
+  --alert-bg: var(--warning-bg-color);
+}
+
+.alert-info {
+  --alert-color: var(--info-text-color);
+  --alert-border: var(--info-border);
+  --alert-bg: var(--info-bg-color);
+}
+
+.alert-light {
+  --alert-color: var(--light-text-color);
+  --alert-border: var(--light-border);
+  --alert-bg: var(--light-bg-color);
+}
+
+.alert-dark {
+  --alert-color: var(--dark-text-color);
+  --alert-border: var(--dark-border);
+  --alert-bg: var(--dark-bg-color);
+}
+
+.alert {
+  padding: var(--space-4) var(--space-4);
+  background-color: var(--alert-bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+  border: var(--alert-border);
+  color: var(--alert-color);
+  position: relative;
+}

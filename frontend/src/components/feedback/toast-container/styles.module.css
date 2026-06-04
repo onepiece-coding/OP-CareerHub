@@ -1,0 +1,57 @@
+/**
+ * @file src/components/feedback/toast-container/styles.module.css
+ */
+
+.toastContainer {
+  max-width: calc(100% - 2rem);
+  flex-direction: column;
+  position: fixed;
+  display: flex;
+  row-gap: 1rem;
+  z-index: 999;
+  width: 400px;
+}
+
+.position-top-right {
+  right: 1rem;
+  top: 1rem;
+}
+
+.position-right-center {
+  transform: translateY(-50%);
+  right: 1rem;
+  top: 50%;
+}
+
+.position-bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.position-bottom-center {
+  transform: translateX(-50%);
+  bottom: 1rem;
+  left: 50%;
+}
+
+.position-bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.position-left-center {
+  transform: translateY(-50%);
+  left: 1rem;
+  top: 50%;
+}
+
+.position-top-left {
+  left: 1rem;
+  top: 1rem;
+}
+
+.position-top-center {
+  transform: translateX(-50%);
+  left: 50%;
+  top: 1rem;
+}

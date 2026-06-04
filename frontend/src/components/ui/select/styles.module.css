@@ -1,0 +1,80 @@
+/**
+ * @file src/components/ui/select/styles.module.css
+ */
+
+.container {
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  border-radius: var(--radius-sm);
+  justify-content: space-between;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--space-2);
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+}
+
+.container:focus {
+  box-shadow: 0 0 0 3.5px var(--color-blue-600-translucent);
+  border-color: var(--color-blue-600);
+  background: var(--color-gray-100);
+  outline: none;
+}
+
+.container.valid {
+  box-shadow: 0 0 0 3px var(--color-emerald-400-translucent);
+  border-color: var(--color-emerald-400);
+}
+
+.container.error {
+  box-shadow: 0 0 0 3px var(--color-red-400-translucent);
+  background: var(--color-red-400-faint);
+  border-color: var(--color-red-400);
+}
+
+.container.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.options {
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  position: absolute;
+  overflow: hidden;
+  list-style: none;
+  margin-top: 6px;
+  display: none;
+  z-index: 10;
+  width: 100%;
+  padding: 0;
+  top: 100%;
+  left: 0;
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.option:hover {
+  background-color: var(--color-slate-200);
+}
+
+.option.selected {
+  background-color: var(--color-blue-500);
+  color: var(--color-white);
+}
+
+.caret {
+  border: 5px solid transparent;
+  border-top-color: var(--color-gray-500);
+  margin-top: 5px;
+}

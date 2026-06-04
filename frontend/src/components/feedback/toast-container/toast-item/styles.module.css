@@ -1,0 +1,96 @@
+/**
+ * @file src/components/feedback/toast-container/toast-item/styles.module.css
+ */
+
+.toast {
+  animation: slideIn 0.4s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Class to trigger when toast is about to be removed */
+.toastExiting {
+  animation: fadeOut 0.4s ease-in forwards;
+}
+
+.toast h5 {
+  text-transform: capitalize;
+  font-size: 16px;
+}
+
+.toast p {
+  margin-bottom: 0;
+  font-size: 15px;
+}
+
+.toast button {
+  position: absolute;
+  right: 10px;
+  /* height: 7px;
+  width: 7px; */
+  top: 10px;
+}
+
+.placeholder-primary {
+  --placeholder-bg-color: var(--primary-text-color);
+}
+
+.placeholder-secondary {
+  --placeholder-bg-color: var(--secondary-text-color);
+}
+
+.placeholder-success {
+  --placeholder-bg-color: var(--success-text-color);
+}
+
+.placeholder-danger {
+  --placeholder-bg-color: var(--danger-text-color);
+}
+
+.placeholder-warning {
+  --placeholder-bg-color: var(--warning-text-color);
+}
+
+.placeholder-info {
+  --placeholder-bg-color: var(--info-text-color);
+}
+
+.placeholder-light {
+  --placeholder-bg-color: var(--light-text-color);
+}
+
+.placeholder-dark {
+  --placeholder-bg-color: var(--dark-text-color);
+}
+
+.placeholder {
+  background-color: var(--placeholder-bg-color);
+  display: inline-block;
+  position: absolute;
+  min-height: 4px;
+  cursor: wait;
+  bottom: 0;
+  left: 0;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}

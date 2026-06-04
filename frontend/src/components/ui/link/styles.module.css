@@ -1,0 +1,35 @@
+/**
+ * @file src/components/ui/link/styles.module.css
+ */
+
+.link {
+  padding: var(--space-3) var(--space-5);
+  transition: background-color 0.2s;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.link-primary {
+  background-color: var(--color-blue-500);
+  color: var(--color-white);
+}
+
+.link-primary:hover {
+  background-color: var(--color-blue-600);
+}
+
+.link-secondary {
+  background-color: var(--color-slate-200);
+  color: var(--color-slate-700);
+}
+
+.link-secondary:hover {
+  background-color: var(--color-slate-300);
+}
+
+.link:focus-visible {
+  outline: 3px solid rgba(123, 60, 255, 0.6);
+  outline-offset: 3px;
+}

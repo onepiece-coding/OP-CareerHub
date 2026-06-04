@@ -1,0 +1,14 @@
+/**
+ * @file src/layouts/main-layout/styles.module.css
+ */
+
+.appShell {
+  flex-direction: column;
+  height: 100vh;
+  display: flex;
+}
+
+.main {
+  overflow-y: auto;
+  flex: 1;
+}

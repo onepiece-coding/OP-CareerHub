@@ -1,0 +1,14 @@
+/**
+ * @file src/components/ui/card/card-header/styles.module.css
+ */
+
+.card-header {
+  margin-bottom: var(--space-4);
+}
+
+/* Responsive */
+/* @media (max-width: 480px) {
+  .card-header {
+    margin-bottom: var(--space-4);
+  }
+} */

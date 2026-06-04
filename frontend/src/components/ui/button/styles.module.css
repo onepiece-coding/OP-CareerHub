@@ -1,0 +1,67 @@
+/**
+ * @file src/components/ui/button/styles.module.css
+ */
+
+.btn {
+  padding: calc(var(--space-2) + 2px) var(--space-4);
+  transition: background-color 0.2s;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-blue {
+  background-color: var(--color-blue-500);
+  color: var(--color-white);
+}
+
+.btn-blue:hover {
+  background-color: var(--color-blue-600);
+}
+
+.btn-slate {
+  background-color: var(--color-slate-200);
+  color: var(--color-slate-700);
+}
+
+.btn-slate:hover {
+  background-color: var(--color-slate-300);
+}
+
+.btn-red {
+  background-color: var(--color-red-400);
+  color: var(--color-white);
+}
+
+.btn-red:hover {
+  background-color: var(--color-red-600);
+}
+
+.btn-emerald {
+  background-color: var(--color-emerald-400);
+  color: var(--color-white);
+}
+
+.btn-emerald:hover {
+  background-color: var(--color-emerald-600);
+}
+
+.btn-yellow {
+  background-color: var(--color-yellow-400);
+  color: var(--color-slate-700);
+}
+
+.btn-yellow:hover {
+  background-color: var(--color-yellow-600);
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(123, 60, 255, 0.6);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}

@@ -1,0 +1,66 @@
+/**
+ * @file src/components/ui/badge/styles.module.css
+ */
+
+.badge {
+  padding: calc(var(--space-2)) calc(var(--space-3));
+  transition: background-color 0.2s;
+  border-radius: var(--radius-sm);
+  font-size: var(--type-sm);
+  vertical-align: initial;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1;
+}
+
+button.badge {
+  cursor: pointer;
+  border: none;
+}
+
+.badge-blue {
+  background-color: var(--color-blue-500);
+  color: var(--color-white);
+}
+
+.badge-blue:hover {
+  background-color: var(--color-blue-600);
+}
+
+.badge-slate {
+  background-color: var(--color-slate-200);
+  color: var(--color-slate-700);
+}
+
+.badge-slate:hover {
+  background-color: var(--color-slate-300);
+}
+
+.badge-red {
+  background-color: var(--color-red-400);
+  color: var(--color-white);
+}
+
+.badge-red:hover {
+  background-color: var(--color-red-600);
+}
+
+.badge-emerald {
+  background-color: var(--color-emerald-400);
+  color: var(--color-white);
+}
+
+.badge-emerald:hover {
+  background-color: var(--color-emerald-600);
+}
+
+.badge-yellow {
+  background-color: var(--color-yellow-400);
+  color: var(--color-slate-700);
+}
+
+.badge-yellow:hover {
+  background-color: var(--color-yellow-600);
+}

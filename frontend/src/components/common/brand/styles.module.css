@@ -1,0 +1,40 @@
+/**
+ * @file src/components/common/brand/styles.module.css
+ */
+
+.brand {
+  align-items: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.logo {
+  box-shadow: var(--card-shadow);
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 0.4),
+    rgba(75, 43, 151, 0.2)
+  );
+  color: var(--color-gray-900);
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  height: 40px;
+  width: 40px;
+}
+
+.brandText {
+  margin-top: calc(var(--space-1) * -1);
+}
+
+.brandName {
+  font-weight: 700;
+}
+
+.brandTagline {
+  font-size: var(--type-xs);
+  color: var(--muted);
+}

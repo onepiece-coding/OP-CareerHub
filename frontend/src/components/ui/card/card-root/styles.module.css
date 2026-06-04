@@ -1,0 +1,33 @@
+/**
+ * @file src/components/ui/card/card-root/styles.module.css
+ */
+
+.card {
+  animation: fadeIn 0.4s ease-out;
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
+  background: var(--color-white);
+  /* padding: var(--space-6); */
+  padding: var(--space-4);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Responsive */
+/* @media (max-width: 480px) {
+  .card {
+    padding: var(--space-5);
+  }
+} */
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

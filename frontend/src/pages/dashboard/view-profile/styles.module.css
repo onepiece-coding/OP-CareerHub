@@ -1,0 +1,67 @@
+/**
+ * @file src/pages/dashboard/view-profile/styles.module.css
+ */
+
+.profile-container {
+  gap: var(--space-3);
+  display: flex;
+}
+
+.profile-picture {
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+  position: relative;
+  overflow: hidden;
+  height: 150px;
+  width: 150px;
+}
+
+.resume-upload {
+  margin-bottom: var(--space-3);
+}
+
+.profile-picture img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.resume-upload input,
+.profile-picture input {
+  display: none;
+}
+
+.profile-picture button,
+.profile-picture label {
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.profile-picture label {
+  transition: all 0.2s;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.profile-picture:hover label {
+  visibility: visible;
+  opacity: 1;
+}
+
+.info-cards {
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  display: flex;
+  flex: 1;
+}
+
+/* media queries */
+
+@media (max-width: 767px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

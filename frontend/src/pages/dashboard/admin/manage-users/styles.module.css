@@ -1,0 +1,47 @@
+/**
+ * @file src/pages/dashboard/admin/manage-users/styles.module.css
+ */
+
+.row {
+  justify-content: space-between;
+  display: flex;
+  gap: 12px;
+}
+
+.label {
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height);
+  color: var(--color-gray-500);
+}
+
+.select {
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  font-size: 0.9375rem;
+  border-radius: 8px;
+  padding: 11px 14px;
+  appearance: none;
+  outline: none;
+  width: 100%;
+}
+
+.select:focus {
+  box-shadow: 0 0 0 3.5px var(--color-blue-600-translucent);
+  border-color: var(--color-blue-600);
+  background: var(--color-gray-100);
+}
+
+/* media queries */
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,21 @@
+/**
+ * @file src/pages/home-page/section-header/styles.module.css
+ */
+
+.header {
+  margin: 0 auto var(--space-6);
+  text-align: center;
+  max-width: 90ch;
+}
+
+.title {
+  color: var(--color-gray-900);
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--type-lg);
+}
+
+.lead {
+  color: var(--color-gray-700);
+  font-size: var(--type-md);
+  margin: 0;
+}

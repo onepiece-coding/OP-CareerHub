@@ -1,0 +1,10 @@
+/**
+ * @file src/pages/dashboard/admin/administrative-information/styles.module.css
+ */
+
+.info-cards {
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  display: flex;
+  flex: 1;
+}

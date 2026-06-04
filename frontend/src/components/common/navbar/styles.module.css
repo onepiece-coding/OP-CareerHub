@@ -1,0 +1,129 @@
+/**
+ * @file src/components/common/navbar/styles.module.css
+ */
+
+.navbar {
+  justify-content: space-between;
+  height: var(--navbar-height);
+  background: linear-gradient(
+    90deg,
+    rgba(11, 17, 32, 0.02),
+    rgba(123, 60, 255, 0.02)
+  );
+  padding: 0 var(--space-4);
+  align-items: center;
+  position: sticky;
+  display: flex;
+  z-index: 60;
+  top: 0;
+}
+
+.navbarContainer {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.navLinks {
+  gap: var(--space-4);
+  align-items: center;
+  display: flex;
+}
+
+.link {
+  padding: calc(var(--space-2)) calc(var(--space-3));
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-700);
+}
+
+button.link {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+.linkActive {
+  box-shadow: 0 4px 12px rgba(75, 43, 151, 0.06);
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 0.12),
+    rgba(75, 43, 151, 0.08)
+  );
+  color: var(--color-gray-900);
+}
+
+/* hamburger for mobile */
+
+.hamburger {
+  background: transparent;
+  padding: var(--space-2);
+  border-radius: 8px;
+  display: none;
+  border: none;
+}
+
+.hamburgerIcon {
+  background: var(--color-gray-700);
+  position: relative;
+  width: 22px;
+  height: 2px;
+}
+
+.hamburgerIcon::before,
+.hamburgerIcon::after {
+  transition:
+    transform 220ms var(--ease-fast),
+    opacity 220ms var(--ease-fast);
+  background: var(--color-gray-700);
+  position: absolute;
+  content: "";
+  width: 22px;
+  height: 2px;
+  left: 0;
+}
+
+.hamburgerIcon::before {
+  top: -7px;
+}
+
+.hamburgerIcon::after {
+  top: 7px;
+}
+
+.sidebarFooter {
+  color: var(--color-slate-700);
+  font-size: var(--type-sm);
+  margin-top: auto;
+}
+
+.sidebarFooter a {
+  color: var(--color-blue-500);
+  transition: color 0.2s;
+}
+
+.sidebarFooter a:hover {
+  color: var(--color-blue-600);
+}
+
+/* responsive design */
+
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .navLinks {
+    display: none;
+  }
+  .hamburger {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1201px) {
+  .mobileMenu {
+    display: none;
+  }
+}

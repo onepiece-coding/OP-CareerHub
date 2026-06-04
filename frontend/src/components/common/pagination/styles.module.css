@@ -1,0 +1,10 @@
+/**
+ * @file src/components/common/pagination/styles.module.css
+ */
+
+.row {
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  display: flex;
+}

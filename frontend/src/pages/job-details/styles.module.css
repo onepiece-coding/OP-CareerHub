@@ -1,0 +1,9 @@
+/**
+ * @file src/pages/job-details/styles.module.css
+ */
+
+.info-cards {
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  display: flex;
+}

@@ -1,0 +1,119 @@
+/**
+ * @file src/components/ui/tags-input/styles.module.css
+ */
+
+/* ── Container (looks like an input) ─────────────────────────────────────── */
+.container {
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  background: var(--color-white);
+  align-items: center;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+  border-radius: 8px;
+  padding: 7px 10px;
+  min-height: 44px;
+  flex-wrap: wrap;
+  display: flex;
+  cursor: text;
+  width: 100%;
+  gap: 6px;
+}
+
+.container:focus-within {
+  box-shadow: 0 0 0 3.5px var(--color-blue-600-translucent);
+  border-color: var(--color-blue-600);
+  background: var(--color-gray-100);
+  outline: none;
+}
+
+.container.valid {
+  box-shadow: 0 0 0 3px var(--color-emerald-400-translucent);
+  border-color: var(--color-emerald-400);
+}
+
+.container.error {
+  box-shadow: 0 0 0 3px var(--color-red-400-translucent);
+  background: var(--color-red-400-faint);
+  border-color: var(--color-red-400);
+}
+
+.container.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Tag pill ─────────────────────────────────────────────────────────────── */
+.tag {
+  background: var(--color-slate-200);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  max-width: 200px;
+  line-height: 1;
+  gap: 5px;
+}
+
+/* Blue tint when container is focused */
+.container:focus-within .tag {
+  background: var(--color-blue-600-translucent);
+  color: var(--color-blue-600);
+}
+
+.tagLabel {
+  color: var(--color-slate-700);
+  font-size: var(--type-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+.container:focus-within .tagLabel {
+  color: var(--color-blue-600);
+}
+
+/* ── Remove button ────────────────────────────────────────────────────────── */
+.removeBtn {
+  color: var(--color-gray-500);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+  align-items: center;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  border: none;
+  padding: 2px;
+}
+
+.removeBtn:hover {
+  background: var(--color-red-400-faint);
+  color: var(--color-red-400);
+}
+
+/* ── Inner input ─────────────────────────────────────────────────────────── */
+.input {
+  color: var(--color-gray-900);
+  background: transparent;
+  font-size: 0.9375rem;
+  min-width: 120px;
+  line-height: 1.5;
+  padding: 2px 0;
+  outline: none;
+  border: none;
+  flex: 1;
+}
+
+.input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}

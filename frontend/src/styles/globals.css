@@ -1,0 +1,212 @@
+/**
+ * @file src/styles/globals.css
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+
+body {
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-gray-900);
+  line-height: 1.45;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+}
+
+/* Root content wrapper: ensure app takes full viewport and sections manage their own scroll */
+:root {
+  --app-max-width: 1200px;
+}
+
+/* Utility classes */
+
+.root {
+  min-height: calc(100vh - (var(--navbar-height) + var(--footer-height)));
+  background-color: var(--french-porcelain);
+  padding: var(--space-6) var(--space-4);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.container {
+  max-width: var(--app-max-width);
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.card-header-heading {
+  color: var(--color-slate-900);
+  margin: 0 0 var(--space-2);
+  font-size: var(--type-lg);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.card-header--subheading {
+  line-height: var(--line-height);
+  color: var(--color-slate-700);
+}
+
+.form {
+  flex-direction: column;
+  gap: var(--space-3);
+  display: flex;
+}
+
+.form-group {
+  gap: var(--space-3);
+  display: flex;
+}
+
+.state {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.state-spinner {
+  margin: 0 auto var(--space-4);
+}
+
+.state-title {
+  margin-bottom: var(--space-2);
+  color: var(--color-slate-900);
+}
+
+.state-desc {
+  margin-bottom: calc(var(--space-4) + 2px);
+  line-height: var(--line-height);
+  color: var(--color-slate-700);
+}
+
+.icon-circle {
+  font-size: calc(var(--type-lg) + 4px);
+  margin: 0 auto var(--space-4);
+  border-radius: var(--rounded);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 60px;
+  width: 60px;
+}
+
+.success-icon {
+  background-color: var(--color-emerald-100);
+  color: var(--color-emerald-600);
+}
+
+.failed-icon {
+  background-color: var(--color-red-100);
+  color: var(--color-red-600);
+}
+
+.to-footer p {
+  color: var(--color-slate-700);
+}
+
+.to-footer a {
+  color: var(--color-blue-500);
+  transition: color 0.15s ease;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.to-footer a:hover {
+  color: var(--color-blue-600);
+}
+
+.visually-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute !important;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: -1px;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  border: 0;
+}
+
+/* Focus styles */
+
+:focus {
+  outline: 3px solid var(--color-blue-600-translucent);
+  outline-offset: 3px;
+}
+
+/* responsive */
+
+@media (max-width: 480px) {
+  .card-header-heading {
+    font-size: calc(var(--type-md) + 4px);
+  }
+  .form {
+    gap: var(--space-4);
+  }
+  .footer {
+    margin-top: var(--space-4);
+  }
+}
+
+@media (max-width: 767px) {
+  .form-group {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .root:has(.container) {
+    padding-inline: 0;
+  }
+}

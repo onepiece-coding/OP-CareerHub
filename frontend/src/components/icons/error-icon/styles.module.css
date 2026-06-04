@@ -1,0 +1,9 @@
+/**
+ * @file src/components/icons/error-icon/styles.module.css
+ */
+
+.error-icon {
+  flex-shrink: 0;
+  height: 13px;
+  width: 13px;
+}

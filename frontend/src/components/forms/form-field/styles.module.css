@@ -1,0 +1,193 @@
+/**
+ * @file src/components/forms/form-field/styles.module.css
+ */
+
+.field {
+  flex-direction: column;
+  position: relative;
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+
+.label {
+  color: var(--color-gray-500);
+  transition: color 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  align-items: center;
+  font-size: 0.72rem;
+  user-select: none;
+  font-weight: 600;
+  display: flex;
+  gap: 4px;
+}
+
+.requiredMark {
+  color: var(--color-red-400);
+  font-size: 0.85em;
+}
+
+.input,
+.select,
+.fileInput {
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  font-size: 0.9375rem;
+  border-radius: 8px;
+  padding: 11px 14px;
+  appearance: none;
+  outline: none;
+  width: 100%;
+}
+
+.fileInput:focus,
+.select:focus,
+.input:focus {
+  box-shadow: 0 0 0 3.5px var(--color-blue-600-translucent);
+  border-color: var(--color-blue-600);
+  background: var(--color-gray-100);
+}
+
+/* ── Valid state (touched + no error) ────────────────────────────────────── */
+.fileInput.valid,
+.select.valid,
+.input.valid {
+  box-shadow: 0 0 0 3px var(--color-emerald-400-translucent);
+  border-color: var(--color-emerald-400);
+}
+
+/* ── Error state ─────────────────────────────────────────────────────────── */
+.fileInput.error,
+.select.error,
+.input.error {
+  box-shadow: 0 0 0 3px var(--color-red-400-translucent);
+  background: var(--color-red-400-faint);
+  border-color: var(--color-red-400);
+}
+
+/* ── File Input ──────────────────────────────────────────────────────────── */
+.fileWrapper {
+  position: relative;
+}
+
+.fileInput {
+  color: var(--color-label);
+  font-size: 0.875rem;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.fileInput::file-selector-button {
+  /* color: var(--color-accent-text);
+  background: var(--color-accent);
+  font-family: var(--font-label); */
+  transition: opacity 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.72rem;
+  margin-right: 12px;
+  border-radius: 5px;
+  padding: 5px 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.fileInput::file-selector-button:hover {
+  opacity: 0.85;
+}
+
+/* ── Password toggle button ──────────────────────────────────────────────── */
+.inputWrapper {
+  position: relative;
+}
+
+.toggleBtn {
+  transition: color 0.15s ease;
+  color: var(--color-gray-500);
+  transform: translateY(-50%);
+  align-items: center;
+  position: absolute;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  border: none;
+  padding: 4px;
+  right: 12px;
+  top: 50%;
+}
+
+.toggleBtn:hover {
+  color: var(--color-blue-600);
+}
+
+.input.hasToggle {
+  padding-right: 42px;
+}
+
+.errorMsg {
+  animation: slideDown 0.18s ease;
+  color: var(--color-red-400);
+  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 1px;
+  display: flex;
+  gap: 5px;
+}
+
+.helperText {
+  color: var(--color-gray-500);
+  font-size: 0.8rem;
+  margin-top: 1px;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes slideDown {
+  from {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Disabled state ──────────────────────────────────────────────────────── */
+.fileInput:disabled,
+.select:disabled,
+.input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Hint row ─────────────────────────────────────────────────────────────── */
+.tagsHint {
+  color: var(--color-gray-500);
+  font-size: var(--type-xs);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.kbd {
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  line-height: 1.4;
+  font-weight: 600;
+  padding: 1px 5px;
+  font-size: 10px;
+}

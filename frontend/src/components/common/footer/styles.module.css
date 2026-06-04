@@ -1,0 +1,28 @@
+/**
+ * @file src/components/common/footer/styles.module.css
+ */
+
+.footerContainer {
+  padding: var(--space-4) 0;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 17, 32, 0.02),
+    rgba(123, 60, 255, 0.02)
+  );
+}
+
+.copyright {
+  text-align: center;
+}
+
+.copyright p {
+  margin: 0;
+}
+
+/* media queries */
+
+@media (max-width: 599px) {
+  .copyright p {
+    font-size: var(--type-sm);
+  }
+}

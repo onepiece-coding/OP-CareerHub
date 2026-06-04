@@ -1,0 +1,58 @@
+/**
+ * @file src/components/ui/confirm-dialog/styles.module.css
+ */
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  z-index: 1000;
+  width: 100vw;
+  left: 0;
+  top: 0;
+}
+
+.modal {
+  width: calc(100% - (var(--space-4) * 2));
+  animation: fadeIn 0.2s ease-out;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--card-shadow);
+  background: var(--color-white);
+  padding: var(--space-4);
+  max-width: 400px;
+}
+
+.title {
+  color: var(--color-gray-900);
+  font-size: var(--type-md);
+  font-weight: bold;
+}
+
+.body {
+  margin-bottom: var(--space-4);
+}
+
+.message {
+  line-height: var(--line-height);
+  color: var(--color-gray-500);
+}
+
+.footer {
+  justify-content: flex-end;
+  gap: var(--space-3);
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

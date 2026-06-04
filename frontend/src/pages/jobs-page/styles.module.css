@@ -1,0 +1,15 @@
+/**
+ * @file src/pages/jobs-page/styles.module.css
+ */
+
+.row {
+  margin-top: var(--space-3);
+  gap: var(--space-3);
+  display: flex;
+}
+
+@media (max-width: 575px) {
+  .row {
+    flex-direction: column;
+  }
+}
