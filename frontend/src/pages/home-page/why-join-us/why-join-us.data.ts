@@ -2,10 +2,12 @@
  * @file src/pages/home-page/why-join-us-section/why-join-us.data.ts
  */
 
-import { MdCastForEducation } from "react-icons/md";
-import { FaBusinessTime } from "react-icons/fa";
-import { TbTargetArrow } from "react-icons/tb";
-import { GiTeamIdea } from "react-icons/gi";
+import {
+  BriefcaseIcon,
+  CursorArrowRippleIcon,
+  DocumentMagnifyingGlassIcon,
+  UsersIcon,
+} from "@/components/icons";
 
 export interface WhyJoinUsItem {
   readonly Icon: React.ComponentType;
@@ -17,25 +19,25 @@ export interface WhyJoinUsItem {
 export const WhyJoinUsItems = [
   {
     id: 1,
-    Icon: FaBusinessTime,
+    Icon: BriefcaseIcon,
     title: "Growth opportunities",
     desc: "Develop your skills and grow with us.",
   },
   {
     id: 2,
-    Icon: MdCastForEducation,
+    Icon: DocumentMagnifyingGlassIcon,
     title: "Continuing education",
     desc: "Access training courses and certifications.",
   },
   {
     id: 3,
-    Icon: TbTargetArrow,
+    Icon: CursorArrowRippleIcon,
     title: "Company values",
     desc: "We champion innovation, respect, and excellence.",
   },
   {
     id: 4,
-    Icon: GiTeamIdea,
+    Icon: UsersIcon,
     title: "Dynamic team",
     desc: "Work with passionate experts, Lorem and lorem.",
   },

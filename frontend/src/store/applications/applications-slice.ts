@@ -41,8 +41,13 @@ const initialState: ApplicationState = {
   currentQueryKey: "",
 };
 
-export const getCacheKey = (query: QuerySchema) =>
-  `${query.page}-${query.limit}`;
+export const getCacheKey = (query: QuerySchema) => {
+  if (query._id) {
+    return `${query.page}-${query.limit}-${query._id}`;
+  } else {
+    return `${query.page}-${query.limit}`;
+  }
+};
 
 const applicationsSlice = createSlice({
   name: "applications",

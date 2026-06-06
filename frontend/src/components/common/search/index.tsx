@@ -23,13 +23,14 @@ const searchSchema: ValidationSchema<searchValues> = {
 
 interface SearchProps {
   handleSearchChange: (newText: string) => void;
+  initialValue: string;
   label: string;
 }
 
-const Search = ({ handleSearchChange, label }: SearchProps) => {
+const Search = ({ handleSearchChange, initialValue, label }: SearchProps) => {
   const { errors, touched, register, handleSubmit, reset } =
     useForm<searchValues>(searchSchema, {
-      search: "",
+      search: initialValue,
     });
 
   const onSubmit = async (data: searchValues) => {
@@ -37,7 +38,7 @@ const Search = ({ handleSearchChange, label }: SearchProps) => {
   };
 
   const onClear = () => {
-    reset();
+    reset({ search: "" });
     handleSearchChange("");
   };
 

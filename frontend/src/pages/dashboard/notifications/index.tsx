@@ -20,7 +20,7 @@ import {
   getNotifications,
 } from "@/store/notifications/notifications-slice";
 import type { Notification } from "@/lib/types";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Badge,
@@ -40,6 +40,8 @@ const Notifications = () => {
   const getNotificationsErrorHeadingRef = useRef<HTMLHeadingElement>(null);
   const markNotificationAsReadErrorHeadingRef =
     useRef<HTMLHeadingElement>(null);
+
+  const [retry, setRetry] = useState(0);
 
   const deleteNotificationError = useAppSelector(selectDeleteNotificationError);
   const getNotificationsStatus = useAppSelector(selectGetNotificationsStatus);
@@ -114,7 +116,7 @@ const Notifications = () => {
       dispatch(clearDeleteNotificationState());
       dispatch(clearGetNotificationsState());
     };
-  }, [dispatch]);
+  }, [dispatch, retry]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -271,6 +273,7 @@ const Notifications = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetNotificationsState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

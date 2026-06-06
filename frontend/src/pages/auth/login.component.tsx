@@ -33,24 +33,35 @@ export const LoginComponent = () => {
       email: "",
     });
 
-  const onSubmit = async (data: LoginValues) => {
+  const onSubmit = (data: LoginValues) => {
     const { email, password } = data;
 
-    try {
-      await dispatch(loginUser({ email, password })).unwrap();
-      dispatch(
-        addToast({
-          type: "success",
-          message: "Successful login to your account",
-        }),
-      );
-      reset();
-      navigate("/", { replace: true });
-    } catch (error) {
-      if (import.meta.env.MODE === "development") {
-        console.error("Login failed:", error);
-      }
-    }
+    dispatch(loginUser({ email, password }))
+      .unwrap()
+      .then((response) => {
+        if (response.unreadNotificationsCount > 0) {
+          dispatch(
+            addToast({
+              type: "primary",
+              message: `You have ${response.unreadNotificationsCount} unread notifications!`,
+            }),
+          );
+        } else {
+          dispatch(
+            addToast({
+              type: "success",
+              message: "Successful login to your account",
+            }),
+          );
+        }
+        reset();
+        navigate("/", { replace: true });
+      })
+      .catch((error) => {
+        if (import.meta.env.MODE === "development") {
+          console.error("Login failed:", error);
+        }
+      });
   };
 
   useEffect(() => {

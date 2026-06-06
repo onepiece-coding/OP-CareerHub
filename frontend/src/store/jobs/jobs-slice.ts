@@ -5,13 +5,18 @@
 import getRecruiterJobs from "./actions/get-recruiter-jobs";
 import { handlePending, handleRejected } from "@/lib/utils";
 import type { Job, OperationState } from "@/lib/types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import deleteRecruiterJob from "./actions/delete-recruiter-job";
 import updateSingleJob from "./actions/update-single-job";
 import getSingleJob from "./actions/get-single-job";
-import getAllJobs from "./actions/get-all-jobs";
+import getAllJobs, { type QuerySchema } from "./actions/get-all-jobs";
 import addJob from "./actions/add-job";
+
+interface CacheData {
+  allJobs: Job[];
+  totalPages: number;
+}
 
 interface JobsState {
   deleteRecruiterJob: OperationState;
@@ -25,6 +30,9 @@ interface JobsState {
   recruiterJobs: Job[];
   totalPages: number;
   allJobs: Job[];
+
+  cache: Record<string, CacheData>;
+  currentQueryKey: string;
 }
 
 const initialState: JobsState = {
@@ -39,7 +47,13 @@ const initialState: JobsState = {
   singleJob: null,
   totalPages: 0,
   allJobs: [],
+
+  cache: {},
+  currentQueryKey: "",
 };
+
+export const getCacheKey = (query: QuerySchema) =>
+  `${query.page}-${query.limit}-${query.search}-${query.sort}-${query.jobStatus}-${query.jobType}`;
 
 const jobsSlice = createSlice({
   name: "jobs",
@@ -65,6 +79,18 @@ const jobsSlice = createSlice({
     },
     clearGetAllJobsState: (state) => {
       state.getAllJobs = { status: "idle", error: null };
+    },
+
+    setCurrentQuery: (state, action: PayloadAction<QuerySchema>) => {
+      const key = getCacheKey(action.payload);
+      state.currentQueryKey = key;
+
+      if (state.cache[key]) {
+        state.getAllJobs.status = "succeeded";
+        state.getAllJobs.error = null;
+      } else {
+        state.getAllJobs.status = "idle";
+      }
     },
   },
   extraReducers: (builder) => {
@@ -141,8 +167,14 @@ const jobsSlice = createSlice({
     });
     builder.addCase(getAllJobs.fulfilled, (state, action) => {
       state.getAllJobs.status = "succeeded";
-      state.totalPages = action.payload.pagination.totalPages;
-      state.allJobs = action.payload.data;
+
+      // Store the newly fetched data in our cache using the requested arguments
+      const key = getCacheKey(action.meta.arg);
+      state.cache[key] = {
+        totalPages: action.payload.pagination.totalPages,
+        allJobs: action.payload.data,
+      };
+      state.currentQueryKey = key;
     });
     builder.addCase(getAllJobs.rejected, (state, action) => {
       handleRejected(state, "getAllJobs", action);
@@ -157,6 +189,7 @@ export const {
   clearGetSingleJobState,
   clearGetAllJobsState,
   clearAddJobState,
+  setCurrentQuery,
   clearSingleJob,
 } = jobsSlice.actions;
 

@@ -2,7 +2,11 @@
  * @file src/pages/jobs-page/index.tsx
  */
 
-import { clearGetAllJobsState, getAllJobs } from "@/store/jobs/jobs-slice";
+import {
+  clearGetAllJobsState,
+  getAllJobs,
+  setCurrentQuery,
+} from "@/store/jobs/jobs-slice";
 import type { QuerySchema } from "@/store/jobs/actions/get-all-jobs";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Pagination, Search } from "@/components/common";
@@ -39,6 +43,8 @@ import {
 const JobsPage = () => {
   const getAllJobsErrorHeadingRef = useRef<HTMLHeadingElement>(null);
   const applyInJobErrorHeadingRef = useRef<HTMLHeadingElement>(null);
+
+  const [retry, setRetry] = useState(0);
 
   const [sort, setSort] = useState<"a-z" | "z-a">("a-z");
   const [pageNumber, setPageNumber] = useState(1);
@@ -137,12 +143,14 @@ const JobsPage = () => {
     if (jobStatus) querySchema.jobStatus = jobStatus;
     if (jobType) querySchema.jobType = jobType;
 
+    dispatch(setCurrentQuery(querySchema));
+
     const promise = dispatch(getAllJobs(querySchema));
     return () => {
       promise.abort();
       dispatch(clearGetAllJobsState());
     };
-  }, [dispatch, pageNumber, search, sort, jobType, jobStatus]);
+  }, [dispatch, pageNumber, search, sort, jobType, jobStatus, retry]);
 
   useEffect(() => {
     return () => {
@@ -231,6 +239,7 @@ const JobsPage = () => {
                 <Search
                   handleSearchChange={handleSearchChange}
                   label={"Search Term"}
+                  initialValue={search}
                 />
 
                 <div className={styles.row}>
@@ -337,6 +346,7 @@ const JobsPage = () => {
               <Button
                 onClick={() => {
                   dispatch(clearGetAllJobsState());
+                  setRetry((prev) => prev + 1);
                 }}
               >
                 Try Again

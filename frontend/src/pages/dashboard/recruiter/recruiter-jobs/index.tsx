@@ -4,7 +4,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { EyeIcon, PencilSquareIcon } from "@/components/icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Job } from "@/lib/types";
 import {
@@ -33,6 +33,8 @@ import DeleteRecruiterJob from "./delete-recruiter-job.component";
 const RecruiterJobs = () => {
   const deleteRecruiterJobErrorHeadingRef = useRef<HTMLHeadingElement>(null);
   const getRecruiterJobsErrorHeadingRef = useRef<HTMLHeadingElement>(null);
+
+  const [retry, setRetry] = useState(0);
 
   const deleteRecruiterJobError = useAppSelector(selectDeleteRecruiterJobError);
   const getRecruiterJobsStatus = useAppSelector(selectGetRecruiterJobsStatus);
@@ -104,7 +106,7 @@ const RecruiterJobs = () => {
       dispatch(clearGetRecruiterJobsState());
       dispatch(clearDeleteRecruiterJobState());
     };
-  }, [dispatch]);
+  }, [dispatch, retry]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -216,6 +218,7 @@ const RecruiterJobs = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetRecruiterJobsState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

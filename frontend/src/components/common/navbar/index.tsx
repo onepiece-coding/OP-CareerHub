@@ -7,7 +7,7 @@ import { toggleSidebarState } from "@/store/ui/ui-slice";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import type { NavItem, Status } from "@/lib/types";
 import { useAppDispatch } from "@/store/hooks";
-import { useRef, useState } from "react";
+import { useRef, type Dispatch, type SetStateAction } from "react";
 import { Badge } from "@/components/ui";
 
 import styles from "./styles.module.css";
@@ -16,11 +16,13 @@ import Sidebar from "../sidebar";
 import Brand from "../brand";
 
 interface NavbarProps {
+  setOpen: Dispatch<SetStateAction<boolean>>;
   isAuthenticated: boolean;
   handleLogout: () => void;
   NAV_ITEMS: NavItem[];
   username?: string;
   status: Status;
+  open: boolean;
 }
 
 const Navbar = ({
@@ -28,9 +30,11 @@ const Navbar = ({
   handleLogout,
   NAV_ITEMS,
   username,
+  setOpen,
   status,
+  open,
 }: NavbarProps) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
   const location = useLocation();
@@ -95,11 +99,11 @@ const Navbar = ({
               if (item.action === "logout") {
                 return (
                   <button // ✅ Semantic interactive element
-                    key="logout"
-                    onClick={handleLogout}
+                    aria-busy={status === "pending"}
                     disabled={status === "pending"}
                     className={styles.link}
-                    aria-busy={status === "pending"}
+                    onClick={handleLogout}
+                    key="logout"
                   >
                     {status === "pending" ? "Logging out…" : item.label}
                   </button>

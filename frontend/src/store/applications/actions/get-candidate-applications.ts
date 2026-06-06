@@ -20,6 +20,7 @@ type TResponse = {
 export type QuerySchema = {
   limit: number;
   page: number;
+  _id?: string;
 };
 
 const getCandidateApplications = createAsyncThunk<

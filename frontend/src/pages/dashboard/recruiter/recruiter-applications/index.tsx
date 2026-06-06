@@ -18,20 +18,23 @@ import {
   clearUpdateApplicationStatusState,
   getRecruiterJobsApplications,
 } from "@/store/applications/applications-slice";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-import UpdateApplicationStatusToBeAccepted from "./update-app-status-to-be-accepted.component";
-import UpdateApplicationStatusToBeRejected from "./update-app-status-to-be-rejected.component";
 import { EyeIcon } from "@/components/icons";
+import UpdateApplicationStatus from "./update-app-status.component";
 
 const RecruiterApplications = () => {
   const [searchParams] = useSearchParams();
+
+  const relatedId = searchParams.get("relatedId");
 
   const getRecruiterJobsApplicationsErrorHeadingRef =
     useRef<HTMLHeadingElement>(null);
   const updateApplicationStatusErrorHeadingRef =
     useRef<HTMLHeadingElement>(null);
+
+  const [retry, setRetry] = useState(0);
 
   const recruiterJobsApplications = useAppSelector(
     selectRecruiterJobsApplications,
@@ -56,8 +59,6 @@ const RecruiterApplications = () => {
       key: "#",
       header: "#",
       render: (_, record, rowIndex) => {
-        const relatedId = searchParams.get("relatedId");
-
         if (relatedId && record._id === relatedId) {
           return <EyeIcon stroke="#ffee58" width={20} />;
         }
@@ -95,14 +96,16 @@ const RecruiterApplications = () => {
             </ExternalLink>
 
             {record.status !== APP_STATUS.ACCEPTED && (
-              <UpdateApplicationStatusToBeAccepted
+              <UpdateApplicationStatus
+                action="toBeAccepted"
                 applicationId={record._id}
                 jobId={record.jobId._id}
               />
             )}
 
             {record.status !== APP_STATUS.REJECTED && (
-              <UpdateApplicationStatusToBeRejected
+              <UpdateApplicationStatus
+                action="toBeRejected"
                 applicationId={record._id}
                 jobId={record.jobId._id}
               />
@@ -121,7 +124,7 @@ const RecruiterApplications = () => {
       dispatch(clearGetRecruiterJobsApplicationsState());
       dispatch(clearUpdateApplicationStatusState());
     };
-  }, [dispatch]);
+  }, [dispatch, retry]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -257,6 +260,7 @@ const RecruiterApplications = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetRecruiterJobsApplicationsState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

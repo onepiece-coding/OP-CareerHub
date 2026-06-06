@@ -2,6 +2,7 @@
  * @file src/store/jobs/jobs-selectors.ts
  */
 
+import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "..";
 
 export const selectJobsState = (state: RootState) => state.jobs;
@@ -46,6 +47,12 @@ export const selectGetAllJobsStatus = (state: RootState) =>
 export const selectGetAllJobsError = (state: RootState) =>
   state.jobs.getAllJobs.error;
 
-export const selectTotalPages = (state: RootState) => state.jobs.totalPages;
+export const selectTotalPages = (state: RootState) => {
+  const { cache, currentQueryKey } = state.jobs;
+  return cache[currentQueryKey]?.totalPages || 0;
+};
 
-export const selectAllJobs = (state: RootState) => state.jobs.allJobs;
+export const selectAllJobs = createSelector([selectJobsState], (jobs) => {
+  const { cache, currentQueryKey } = jobs;
+  return cache[currentQueryKey]?.allJobs || [];
+});

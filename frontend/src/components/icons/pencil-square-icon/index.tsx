@@ -1,5 +1,5 @@
 /**
- * @file src/components/icons/eye-icon/index.tsx
+ * @file src/components/icons/pencil-square-icon/index.tsx
  */
 
 import { cx } from "@/lib/utils";

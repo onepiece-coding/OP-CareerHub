@@ -9,20 +9,22 @@ import { Button } from "@/components/ui";
 import { APP_STATUS } from "@/lib/types";
 import { useState } from "react";
 
-interface UpdateApplicationStatusToBeAcceptedProps {
+interface UpdateApplicationStatusProps {
+  action: "toBeAccepted" | "toBeRejected";
   applicationId: string;
   jobId: string;
 }
 
-const UpdateApplicationStatusToBeAccepted = ({
+const UpdateApplicationStatus = ({
   applicationId,
+  action,
   jobId,
-}: UpdateApplicationStatusToBeAcceptedProps) => {
+}: UpdateApplicationStatusProps) => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const handleUpdateApplicationStatusToBeAccepted = async () => {
+  const handleUpdateApplicationStatus = async () => {
     if (!applicationId || !jobId) return;
 
     setLoading(true);
@@ -31,7 +33,13 @@ const UpdateApplicationStatusToBeAccepted = ({
       await dispatch(
         updateApplicationStatus({
           applicationId,
-          body: { jobId, status: APP_STATUS.ACCEPTED },
+          body: {
+            jobId,
+            status:
+              action === "toBeAccepted"
+                ? APP_STATUS.ACCEPTED
+                : APP_STATUS.REJECTED,
+          },
         }),
       ).unwrap();
 
@@ -50,12 +58,26 @@ const UpdateApplicationStatusToBeAccepted = ({
     }
   };
 
+  if (action === "toBeRejected") {
+    return (
+      <Button
+        aria-label={`Set status to ${APP_STATUS.REJECTED} for this application`}
+        aria-busy={loading}
+        disabled={loading}
+        onClick={handleUpdateApplicationStatus}
+        variant="red"
+      >
+        {loading ? "Rejecting..." : "Reject"}
+      </Button>
+    );
+  }
+
   return (
     <Button
       aria-label={`Set status to ${APP_STATUS.ACCEPTED} for this application`}
-      onClick={handleUpdateApplicationStatusToBeAccepted}
-      aria-busy={loading}
-      disabled={loading}
+      aria-busy={loading || loading}
+      disabled={loading || loading}
+      onClick={handleUpdateApplicationStatus}
       variant="emerald"
     >
       {loading ? "Accepting..." : "Accept"}
@@ -63,4 +85,4 @@ const UpdateApplicationStatusToBeAccepted = ({
   );
 };
 
-export default UpdateApplicationStatusToBeAccepted;
+export default UpdateApplicationStatus;

@@ -43,6 +43,8 @@ const ManageUsers = () => {
   const getAllUsersErrorHeadingRef = useRef<HTMLHeadingElement>(null);
   const deleteUserErrorHeadingRef = useRef<HTMLHeadingElement>(null);
 
+  const [retry, setRetry] = useState(0);
+
   const [pageNumber, setPageNumber] = useState(1);
   const [username, setUserName] = useState("");
 
@@ -147,7 +149,7 @@ const ManageUsers = () => {
       // dispatch(clearGetAllUsersState());
       dispatch(clearUpdateUserRoleState());
     };
-  }, [dispatch, pageNumber, username]);
+  }, [dispatch, pageNumber, username, retry]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -293,6 +295,7 @@ const ManageUsers = () => {
             <Card.Body>
               <Search
                 handleSearchChange={handleUsernameChange}
+                initialValue={username}
                 label={"Username"}
               />
 
@@ -341,6 +344,7 @@ const ManageUsers = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetAllUsersState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

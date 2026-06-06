@@ -2,8 +2,12 @@
  * @file src/pages/home-page/how-does-it-work/how-does-it-work.data.ts
  */
 
-import { CiSearch, CiMedal, CiLogin } from "react-icons/ci";
-import { FiUserCheck } from "react-icons/fi";
+import {
+  ArrowRightEndOnRectangleIcon,
+  CheckCircleIcon,
+  MagnifyingGlassIcon,
+  UserPlusIcon,
+} from "@/components/icons";
 
 export interface HowDoesItWorkItem {
   readonly Icon: React.ComponentType;
@@ -15,25 +19,25 @@ export interface HowDoesItWorkItem {
 export const HowDoesItWorkItems = [
   {
     id: 1,
-    Icon: CiSearch,
+    Icon: MagnifyingGlassIcon,
     title: "Search for a position",
     desc: "Explore our offers available now. Lorem ipsum",
   },
   {
     id: 2,
-    Icon: CiLogin,
+    Icon: ArrowRightEndOnRectangleIcon,
     title: "Apply online",
     desc: "Complete your application in just a few clicks.",
   },
   {
     id: 3,
-    Icon: FiUserCheck,
+    Icon: UserPlusIcon,
     title: "Take an interview",
     desc: "If your profile matches, we will contact you.",
   },
   {
     id: 4,
-    Icon: CiMedal,
+    Icon: CheckCircleIcon,
     title: "Join us!",
     desc: "Congratulations, you're part of the team!",
   },

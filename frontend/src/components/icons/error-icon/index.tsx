@@ -2,12 +2,17 @@
  * @file src/components/icons/error-icon/index.tsx
  */
 
+import { cx } from "@/lib/utils";
 import styles from "./styles.module.css";
 
-const ErrorIcon = () => {
+interface ErrorIconProps {
+  className?: string;
+}
+
+const ErrorIcon = ({ className }: ErrorIconProps) => {
   return (
     <svg
-      className={styles["error-icon"]}
+      className={cx(`${styles["error-icon"]}`, className)}
       strokeLinejoin="round"
       strokeLinecap="round"
       stroke="currentColor"

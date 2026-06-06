@@ -21,7 +21,7 @@ const getRecruiterJobs = createAsyncThunk(
     const { jobs } = getState() as RootState;
 
     try {
-      if (jobs.recruiterJobs.length > 0)
+      if (jobs.recruiterJobs.length > 1)
         return fulfillWithValue({ status: true, data: jobs.recruiterJobs });
 
       const response = await api.get<TResponse>(`/jobs/my-jobs`, { signal });

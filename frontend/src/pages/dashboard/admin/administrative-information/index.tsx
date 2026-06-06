@@ -6,7 +6,7 @@ import { clearGetAllInfoState, getAllInfo } from "@/store/admin/admin-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Button, Card, Spinner } from "@/components/ui";
 import { InfoCard } from "@/components/common";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   selectAllInfo,
   selectGetAllInfoError,
@@ -52,6 +52,8 @@ const getInfoIcon = (key: string): React.ComponentType<IconProps> | null => {
 const AdministrativeInformation = () => {
   const errorHeadingRef = useRef<HTMLHeadingElement>(null);
 
+  const [retry, setRetry] = useState(0);
+
   const status = useAppSelector(selectGetAllInfoStatus);
   const error = useAppSelector(selectGetAllInfoError);
   const info = useAppSelector(selectAllInfo);
@@ -64,7 +66,7 @@ const AdministrativeInformation = () => {
       promise.abort();
       dispatch(clearGetAllInfoState());
     };
-  }, [dispatch]);
+  }, [dispatch, retry]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -141,6 +143,7 @@ const AdministrativeInformation = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetAllInfoState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

@@ -20,14 +20,18 @@ import {
 } from "@/store/applications/applications-slice";
 import { useSearchParams } from "react-router-dom";
 import { EyeIcon } from "@/components/icons";
+import type { QuerySchema } from "@/store/applications/actions/get-candidate-applications";
 
 const CandidateApplications = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const relatedId = searchParams.get("relatedId");
 
   const getCandidateApplicationsErrorHeadingRef =
     useRef<HTMLHeadingElement>(null);
 
   const [pageNumber, setPageNumber] = useState(1);
+  const [retry, setRetry] = useState(0);
 
   const totalPages = useAppSelector(selectGetCandidateApplicationsTotalPages);
   const getCandidateApplicationsStatus = useAppSelector(
@@ -47,8 +51,6 @@ const CandidateApplications = () => {
       key: "#",
       header: "#",
       render: (_, record, rowIndex) => {
-        const relatedId = searchParams.get("relatedId");
-
         if (relatedId && record._id === relatedId) {
           return <EyeIcon stroke="#ffee58" width={20} />;
         }
@@ -77,16 +79,22 @@ const CandidateApplications = () => {
   };
 
   useEffect(() => {
-    dispatch(setCurrentQuery({ page: pageNumber, limit: 2 }));
+    const body: QuerySchema = {
+      page: pageNumber,
+      limit: 2,
+    };
 
-    const promise = dispatch(
-      getCandidateApplications({ page: pageNumber, limit: 2 }),
-    );
+    if (relatedId) body._id = relatedId;
+
+    dispatch(setCurrentQuery(body));
+
+    const promise = dispatch(getCandidateApplications(body));
     return () => {
       promise.abort();
       dispatch(clearGetCandidateApplicationsState());
+      setSearchParams("");
     };
-  }, [dispatch, pageNumber]);
+  }, [dispatch, pageNumber, retry, relatedId, setSearchParams]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -137,7 +145,7 @@ const CandidateApplications = () => {
                 rowKey="_id"
               />
 
-              {totalPages > 0 && (
+              {totalPages > 1 && (
                 <Pagination
                   handlePageChange={handlePageChange}
                   totalPages={totalPages}
@@ -145,6 +153,20 @@ const CandidateApplications = () => {
                 />
               )}
             </Card.Body>
+            {relatedId && (
+              <Card.Footer className={"to-footer"}>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    variant="slate"
+                    onClick={() => {
+                      setSearchParams("");
+                    }}
+                  >
+                    Refresh
+                  </Button>
+                </div>
+              </Card.Footer>
+            )}
           </Card>
         </div>
       </>
@@ -176,6 +198,7 @@ const CandidateApplications = () => {
             <Button
               onClick={() => {
                 dispatch(clearGetCandidateApplicationsState());
+                setRetry((prev) => prev + 1);
               }}
             >
               Try Again

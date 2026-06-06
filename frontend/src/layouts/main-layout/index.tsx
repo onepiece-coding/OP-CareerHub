@@ -13,7 +13,7 @@ import {
   selectLogoutStatus,
   selectCurrentUser,
 } from "@/store/auth/auth-selectors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   AUTHENTICATED_NAV_ITEMS,
   UNAUTHENTICATED_NAV_ITEMS,
@@ -22,6 +22,8 @@ import {
 import styles from "./styles.module.css";
 
 function MainLayout() {
+  const [open, setOpen] = useState(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ function MainLayout() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser()).unwrap();
+    setOpen(false);
     navigate("/auth/login", { replace: true });
   };
 
@@ -54,7 +57,9 @@ function MainLayout() {
         isAuthenticated={isAuthenticated}
         username={currentUser?.username}
         handleLogout={handleLogout}
+        setOpen={setOpen}
         status={status}
+        open={open}
       />
       <main className={styles.main}>
         <Outlet />

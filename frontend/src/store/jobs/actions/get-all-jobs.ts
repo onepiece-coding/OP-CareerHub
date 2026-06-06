@@ -7,6 +7,8 @@ import { axiosErrorHandler } from "@/lib/utils";
 import type { Job } from "@/lib/types";
 
 import api from "@/services/api-service";
+import type { RootState } from "@/store";
+import { getCacheKey } from "../jobs-slice";
 
 type TResponse = {
   pagination: {
@@ -24,7 +26,11 @@ export type QuerySchema = {
   sort: string;
 };
 
-const getAllJobs = createAsyncThunk(
+const getAllJobs = createAsyncThunk<
+  TResponse,
+  QuerySchema,
+  { state: RootState }
+>(
   "jobs/getAllJobs",
   async (querySchema: QuerySchema, thunk) => {
     const { fulfillWithValue, rejectWithValue, signal } = thunk;
@@ -41,6 +47,14 @@ const getAllJobs = createAsyncThunk(
       }
       return rejectWithValue(axiosErrorHandler(error));
     }
+  },
+  {
+    // If this returns false, the thunk cancels execution completely.
+    condition: (querySchema, { getState }) => {
+      const state = getState();
+      const key = getCacheKey(querySchema);
+      return !state.jobs.cache[key];
+    },
   },
 );
 

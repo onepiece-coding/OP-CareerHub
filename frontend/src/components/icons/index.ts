@@ -1,7 +1,10 @@
+import ArrowRightEndOnRectangleIcon from "./arrow-right-end-on-rectangle-icon";
 import DocumentMagnifyingGlassIcon from "./document-magnifying-glass-icon";
+import CursorArrowRippleIcon from "./cursor-arrow-ripple-icon";
 import WrenchScrewdriverIcon from "./wrench-screwdriver-icon";
 import ArchiveBoxXMarkIcon from "./archive-box-x-mark-icon";
 import ArrowTrendingUpIcon from "./arrow-trending-up-icon";
+import MagnifyingGlassIcon from "./magnifying-glass-icon";
 import CurrencyDollarIcon from "./currency-dollar-icon";
 import IdentificationIcon from "./identification-icon";
 import PencilSquareIcon from "./pencil-square-icon";
@@ -28,9 +31,12 @@ import EyeIcon from "./eye-icon";
 export type IconProps = { className: string };
 
 export {
+  ArrowRightEndOnRectangleIcon,
   DocumentMagnifyingGlassIcon,
+  CursorArrowRippleIcon,
   WrenchScrewdriverIcon,
   ArchiveBoxXMarkIcon,
+  MagnifyingGlassIcon,
   ArrowTrendingUpIcon,
   CurrencyDollarIcon,
   IdentificationIcon,

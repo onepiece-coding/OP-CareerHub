@@ -69,7 +69,7 @@ export interface UseFormReturn<TValues extends Record<string, unknown>> {
     onValid: (values: TValues) => void | Promise<void>,
   ) => React.FormEventHandler<HTMLFormElement>;
   /** Manually reset the form to initial values */
-  reset: () => void;
+  reset: (newValues?: Partial<TValues>) => void;
   /** Whether the form is currently submitting */
   isSubmitting: boolean;
 }
@@ -323,8 +323,15 @@ export function useForm<TValues extends Record<string, unknown>>(
   // -------------------------------------------------------------------------
   // reset
   // -------------------------------------------------------------------------
-  const reset = useCallback(() => {
-    setValues(initialValuesRef.current);
+  const reset = useCallback((newValues?: Partial<TValues>) => {
+    setValues(() => {
+      // If overrides are passed, merge them with the initial values
+      if (newValues) {
+        return { ...initialValuesRef.current, ...newValues } as TValues;
+      }
+      // Otherwise, just reset to the original initial values
+      return initialValuesRef.current;
+    });
     setErrors({});
     setTouched({});
     setIsDirty(false);
