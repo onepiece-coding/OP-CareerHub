@@ -1,75 +1,109 @@
-# React + TypeScript + Vite
+# CareerHub — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A full-featured job portal SPA built with React 19, TypeScript, Redux Toolkit, and CSS Modules. Supports three roles — **Admin**, **Recruiter**, and **Job Seeker** — with a complete authentication flow, role-based dashboards, job listings, and application management.
 
-Currently, two official plugins are available:
+[![React](https://img.shields.io/badge/React-18%2B-61DAFB?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org)
+[![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux)](https://redux-toolkit.js.org)
+[![React Router](https://img.shields.io/badge/React_Router-v6-CA4245?logo=reactrouter)](https://reactrouter.com)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)](https://vitejs.dev)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+| Repository | Description |
+|---|---|
+| **This repo** | React SPA — frontend only |
+| [CareerHub Backend](https://github.com/onepiece-coding/OP-CareerHub/tree/main/backend) | Express + MongoDB REST API |
+| [CareerHub Monorepo](https://github.com/onepiece-coding/OP-CareerHub) | Full-stack — frontend + backend together |
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+## ✨ Live Demo
 
-## Expanding the ESLint configuration
+🚀 **[careerhub.example.com](https://careerhub.example.com)**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Test credentials**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@careerhub.com | Admin@1234 |
+| Recruiter | recruiter@careerhub.com | Recruiter@1234 |
+| User | user@careerhub.com | User@1234 |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Features
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Authentication & Security
+- **Register / Login / Logout** with httpOnly cookie-based JWT authentication
+- **Email verification** flow via tokenised link
+- **Forgot password** and **reset password** via secure email link
+- **Token refresh queue** — concurrent 401 responses are queued and retried automatically after a silent token refresh, with graceful logout on failure
+- **Session validation** on every app mount via `/auth/me`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Role-Based Access Control
+| Feature | Admin | Recruiter | User |
+|---|:---:|:---:|:---:|
+| Administrative dashboard | ✅ | — | — |
+| Manage users (CRUD + role assignment) | ✅ | — | — |
+| Post and manage job listings | — | ✅ | — |
+| Review and action applications | — | ✅ | — |
+| Browse and filter all jobs | ✅ | ✅ | ✅ |
+| Apply to jobs | — | — | ✅ |
+| View own applications with status | — | — | ✅ |
+| Upload profile photo & resume | ✅ | ✅ | ✅ |
+| Edit profile (username, location, gender) | ✅ | ✅ | ✅ |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Job Board
+- Browse all jobs with **server-side search, sort, filter** (type, status) and **pagination**
+- Detailed job view (description, skills, facilities, salary, deadline)
+- Recruiter job management: add, edit, delete with in-memory client-side cache
+
+### Dashboard
+- Role-aware **collapsible sidebar** navigation (portal-rendered)
+- **Profile page** with avatar upload, resume upload, and info cards
+- **Edit profile** form with optional-field validation
+
+### Admin Panel
+- Live **administrative information** (users, admins, recruiters, applicants, jobs, interviews)
+- **User table** with search, pagination, role assignment, and user deletion (with cache invalidation)
+
+### UI & UX
+- Custom **toast notification system** (auto-dismiss, progress bar, pause-on-hover)
+- **Confirm dialog** (portal-rendered, ESC key, focus trap, ARIA `role="dialog"`)
+- Custom **DatePicker** calendar with min/max date range
+- Custom **TagsInput** (Enter / comma to add, Backspace to remove last)
+- Custom **Select** dropdown with keyboard navigation (↑ ↓ Enter Escape)
+- Fully accessible **Sidebar** with focus trap, scroll lock, and keyboard dismiss
+- **Skeleton loading states** and graceful error states with focus management
+
+### Accessibility (A11y)
+- All interactive elements are keyboard focusable (`<button>`, `<a>`, no `<span onClick>`)
+- `aria-label`, `aria-busy`, `aria-invalid`, `aria-describedby` on all form controls
+- Focus shifts programmatically on every state transition (error → heading, success → heading)
+- Semantic HTML landmarks (`<nav>`, `<main>`, `<footer>`, `<header>`)
+- `visually-hidden` class for screen-reader-only text
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|---|---|
+| **Framework** | React 19 |
+| **Language** | TypeScript |
+| **Build Tool** | Vite |
+| **State Management** | Redux Toolkit (slices, thunks, selectors) |
+| **Routing** | React Router v6 |
+| **HTTP Client** | Axios (with interceptor queue) |
+| **Styling** | CSS Modules (zero external UI library) |
+| **Form Engine** | Custom `useForm` hook |
+| **Validation** | Custom validation library (discriminated union rules) |
+| **Notifications** | Custom toast system (Redux-backed) |
+
+
+---
+
+<p align="center">
+  Built with ❤️ using React + TypeScript + Redux Toolkit
+</p>
