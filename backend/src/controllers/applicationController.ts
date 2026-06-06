@@ -6,6 +6,7 @@ import Notification from '../models/Notification.js';
 import User from '../models/User.js';
 import Job from '../models/Job.js';
 import { sendNotification } from '../services/socketService.js';
+import { JOB_STATUS } from '../utils/constants.js';
 
 /**----------------------------------------------
  * @desc   Get Candidate Applications
@@ -113,6 +114,10 @@ export const applyInJobCtrl = asyncHandler(
     const job = await Job.findById(req.body.jobId).select('createdBy');
     if (!job) {
       throw createError(404, 'Job not found!');
+    }
+
+    if (job.jobStatus !== JOB_STATUS.PENDING) {
+      throw createError(404, 'Can not apply to this job!');
     }
 
     // Check user has a resume
