@@ -235,7 +235,7 @@ const Notifications = () => {
                 All the user notifications
               </h1>
               <p className="card-header--subheading">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Stay updated with the latest alerts, and activity.
               </p>
             </Card.Header>
             <Card.Body>

@@ -8,26 +8,34 @@ import type { Application } from "@/lib/types";
 
 import api from "@/services/api-service";
 import type { RootState } from "@/store";
+import { getCacheKey } from "../applications-slice";
 
 type TResponse = {
-  result: Application[];
+  pagination: {
+    totalPages: number;
+  };
+  data: Application[];
   status: boolean;
 };
 
-const getRecruiterJobsApplications = createAsyncThunk(
+export type QuerySchema = {
+  limit: number;
+  page: number;
+  _id?: string;
+};
+
+const getRecruiterJobsApplications = createAsyncThunk<
+  TResponse,
+  QuerySchema,
+  { state: RootState }
+>(
   "applications/getRecruiterJobsApplications",
-  async (_, thunk) => {
-    const { fulfillWithValue, rejectWithValue, getState, signal } = thunk;
-    const { applications } = getState() as RootState;
+  async (querySchema: QuerySchema, thunk) => {
+    const { fulfillWithValue, rejectWithValue, signal } = thunk;
 
     try {
-      if (applications.recruiterJobsApplications.length > 0)
-        return fulfillWithValue({
-          status: true,
-          result: applications.recruiterJobsApplications,
-        });
-
       const response = await api.get<TResponse>(`/applications/recruiter`, {
+        params: querySchema,
         signal,
       });
 
@@ -38,6 +46,14 @@ const getRecruiterJobsApplications = createAsyncThunk(
       }
       return rejectWithValue(axiosErrorHandler(error));
     }
+  },
+  {
+    // If this returns false, the thunk cancels execution completely.
+    condition: (querySchema, { getState }) => {
+      const state = getState();
+      const key = getCacheKey(querySchema);
+      return !state.applications.recruiterApplicationsCache[key];
+    },
   },
 );
 

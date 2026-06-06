@@ -20,25 +20,25 @@ export const WhyJoinUsItems = [
   {
     id: 1,
     Icon: BriefcaseIcon,
-    title: "Growth opportunities",
-    desc: "Develop your skills and grow with us.",
+    title: "Career Support",
+    desc: "Find opportunities that match your goals and experience.",
   },
   {
     id: 2,
     Icon: DocumentMagnifyingGlassIcon,
-    title: "Continuing education",
-    desc: "Access training courses and certifications.",
+    title: "Growth Opportunities",
+    desc: "Build your future with roles that help you learn and progress.",
   },
   {
     id: 3,
     Icon: CursorArrowRippleIcon,
-    title: "Company values",
-    desc: "We champion innovation, respect, and excellence.",
+    title: "Trusted by Recruiters",
+    desc: "Connect with reliable employers and real job offers.",
   },
   {
     id: 4,
     Icon: UsersIcon,
-    title: "Dynamic team",
-    desc: "Work with passionate experts, Lorem and lorem.",
+    title: "Fast Hiring Process",
+    desc: "Apply quickly and move forward without delay.",
   },
 ] as const satisfies readonly WhyJoinUsItem[];

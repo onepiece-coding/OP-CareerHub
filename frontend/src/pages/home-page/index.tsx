@@ -2,11 +2,11 @@
  * @file src/pages/home-page/index.tsx
  */
 
-import WhyJoinUs from "./why-join-us";
 import WhoCanRegister from "./who-can-register";
 import HowDoesItWork from "./how-does-it-work";
 import CallToAction from "./call-to-action";
 import HeroSection from "./hero-section";
+import WhyJoinUs from "./why-join-us";
 
 function HomePage() {
   return (

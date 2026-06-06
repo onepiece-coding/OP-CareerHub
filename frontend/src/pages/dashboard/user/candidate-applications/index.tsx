@@ -16,7 +16,7 @@ import {
 import {
   clearGetCandidateApplicationsState,
   getCandidateApplications,
-  setCurrentQuery,
+  setCurrentQueryKeyForUserApplicationsCache,
 } from "@/store/applications/applications-slice";
 import { useSearchParams } from "react-router-dom";
 import { EyeIcon } from "@/components/icons";
@@ -86,7 +86,7 @@ const CandidateApplications = () => {
 
     if (relatedId) body._id = relatedId;
 
-    dispatch(setCurrentQuery(body));
+    dispatch(setCurrentQueryKeyForUserApplicationsCache(body));
 
     const promise = dispatch(getCandidateApplications(body));
     return () => {
@@ -135,7 +135,7 @@ const CandidateApplications = () => {
             <Card.Header>
               <h1 className="card-header-heading">Candidate Applications</h1>
               <p className="card-header--subheading">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Track your submitted applications and monitor their status.
               </p>
             </Card.Header>
             <Card.Body>

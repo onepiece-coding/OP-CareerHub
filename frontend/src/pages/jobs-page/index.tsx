@@ -11,7 +11,7 @@ import type { QuerySchema } from "@/store/jobs/actions/get-all-jobs";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Pagination, Search } from "@/components/common";
 import { useEffect, useRef, useState } from "react";
-import { type Job } from "@/lib/types";
+import { APP_STATUS, type Job } from "@/lib/types";
 import {
   selectAllJobs,
   selectGetAllJobsError,
@@ -90,13 +90,15 @@ const JobsPage = () => {
       render: (_, record) => (
         <div style={{ display: "flex", gap: "12px" }}>
           <>
-            {isAuthenticated && isUser && (
-              <ApplyJob
-                position={record.position}
-                company={record.company}
-                jobId={record._id}
-              />
-            )}
+            {isAuthenticated &&
+              isUser &&
+              record.jobStatus === APP_STATUS.PENDING && (
+                <ApplyJob
+                  position={record.position}
+                  company={record.company}
+                  jobId={record._id}
+                />
+              )}
             <Link to={`/jobs/${record._id}/details`}>Details</Link>
           </>
         </div>
@@ -232,7 +234,8 @@ const JobsPage = () => {
               <Card.Header>
                 <h1 className="card-header-heading">All Jobs</h1>
                 <p className="card-header--subheading">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Discover open positions and find the right opportunity for
+                  your career.
                 </p>
               </Card.Header>
               <Card.Body>

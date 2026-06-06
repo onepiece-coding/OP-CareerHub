@@ -51,7 +51,7 @@ const EditRecruiterJob = () => {
   if (getSingleJobStatus === "idle" || getSingleJobStatus === "pending") {
     return (
       <>
-        <title>CareerHub | Edit A Job | Loading State</title>
+        <title>CareerHub | Edit Job | Loading State</title>
         <Card className="state">
           <Card.Body>
             <Spinner className="state-spinner" />
@@ -76,7 +76,7 @@ const EditRecruiterJob = () => {
   if (getSingleJobStatus === "failed" && getSingleJobError) {
     return (
       <>
-        <title>CareerHub | Edit A Job | Failed State</title>
+        <title>CareerHub | Edit Job | Failed State</title>
         <Card>
           <Card.Header>
             <h1

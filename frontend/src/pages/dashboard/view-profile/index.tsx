@@ -217,7 +217,7 @@ const ViewProfile = () => {
           <Card.Header>
             <h1 className="card-header-heading">View Profile</h1>
             <p className="card-header--subheading">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Review your personal details.
             </p>
           </Card.Header>
           <Card.Body>

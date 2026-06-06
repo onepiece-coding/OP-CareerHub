@@ -51,7 +51,7 @@ const getCandidateApplications = createAsyncThunk<
     condition: (querySchema, { getState }) => {
       const state = getState();
       const key = getCacheKey(querySchema);
-      return !state.applications.cache[key];
+      return !state.applications.userApplicationsCache[key];
     },
   },
 );

@@ -81,7 +81,7 @@ const RecruiterJobs = () => {
       render: (_, record) => (
         <div style={{ display: "flex", gap: "12px" }}>
           <>
-            <Link to={"/jobs/details"}>
+            <Link to={`/jobs/${record._id}/details`}>
               <Badge variant="yellow">
                 <EyeIcon />
               </Badge>
@@ -180,7 +180,7 @@ const RecruiterJobs = () => {
             <Card.Header>
               <h1 className="card-header-heading">All the recruiter jobs</h1>
               <p className="card-header--subheading">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Manage all your posted jobs and track their performance easily.
               </p>
             </Card.Header>
             <Card.Body>

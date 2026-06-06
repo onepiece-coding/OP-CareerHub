@@ -18,6 +18,7 @@ import {
   getSingleJob,
 } from "@/store/jobs/jobs-slice";
 import {
+  ArrowRightEndOnRectangleIcon,
   CreditCardIcon,
   DocumentMagnifyingGlassIcon,
   IdentificationIcon,
@@ -85,7 +86,8 @@ const JobDetails = () => {
               <Card.Header>
                 <h1 className="card-header-heading">Job Details</h1>
                 <p className="card-header--subheading">
-                  A Single Job Details For {singleJob?.company}
+                  View complete job information and decide if this opportunity
+                  is the right fit for you.
                 </p>
               </Card.Header>
               <Card.Body>
@@ -113,9 +115,14 @@ const JobDetails = () => {
                     title={"Job benefits"}
                   />
                   <InfoCard
+                    IconComponent={ArrowRightEndOnRectangleIcon}
+                    desc={singleJob?.jobStatus || "Not available"}
+                    title={"Job status"}
+                  />
+                  <InfoCard
                     IconComponent={CreditCardIcon}
                     desc={"$" + singleJob?.jobSalary || "Not available"}
-                    title={"Job Salary"}
+                    title={"Job salary"}
                   />
                 </div>
               </Card.Body>

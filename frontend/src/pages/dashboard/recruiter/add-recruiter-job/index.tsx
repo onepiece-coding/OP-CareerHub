@@ -123,7 +123,7 @@ const AddRecruiterJob = () => {
         <Card.Header>
           <h1 className="card-header-heading">Add A Job</h1>
           <p className="card-header--subheading">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Create a new job post and reach the right candidates faster.
           </p>
         </Card.Header>
         <Card.Body>

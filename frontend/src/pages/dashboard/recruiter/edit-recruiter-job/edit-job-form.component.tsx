@@ -106,7 +106,7 @@ const EditJobForm = ({ job, jobId }: EditJobFormProps) => {
   if (updateSingleJobStatus === "failed" && updateSingleJobError) {
     return (
       <>
-        <title>CareerHub | Edit A Job Failed</title>
+        <title>CareerHub | Edit Job Failed</title>
         <Card>
           <Card.Header>
             <h1
@@ -114,7 +114,7 @@ const EditJobForm = ({ job, jobId }: EditJobFormProps) => {
               className="card-header-heading"
               tabIndex={-1}
             >
-              Edit a job failed
+              Edit job failed
             </h1>
             <p className="card-header--subheading">{updateSingleJobError}</p>
           </Card.Header>
@@ -130,12 +130,12 @@ const EditJobForm = ({ job, jobId }: EditJobFormProps) => {
 
   return (
     <>
-      <title>CareerHub | Edit A Job</title>
+      <title>CareerHub | Edit Job</title>
       <Card style={{ maxWidth: "initial", width: "100%" }}>
         <Card.Header>
-          <h1 className="card-header-heading">Edit A Job</h1>
+          <h1 className="card-header-heading">Edit Job</h1>
           <p className="card-header--subheading">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Update your job posting details to keep it accurate and up to date.
           </p>
         </Card.Header>
         <Card.Body>

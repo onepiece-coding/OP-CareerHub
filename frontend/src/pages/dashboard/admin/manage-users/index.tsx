@@ -289,7 +289,7 @@ const ManageUsers = () => {
             <Card.Header>
               <h1 className="card-header-heading">Manage Users</h1>
               <p className="card-header--subheading">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                View, organize, and manage all registered users efficiently.
               </p>
             </Card.Header>
             <Card.Body>

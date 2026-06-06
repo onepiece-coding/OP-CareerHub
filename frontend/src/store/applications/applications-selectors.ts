@@ -19,9 +19,6 @@ export const selectGetRecruiterJobsApplicationsStatus = (state: RootState) =>
 export const selectGetRecruiterJobsApplicationsError = (state: RootState) =>
   state.applications.getRecruiterJobsApplications.error;
 
-export const selectRecruiterJobsApplications = (state: RootState) =>
-  state.applications.recruiterJobsApplications;
-
 export const selectUpdateApplicationStatusStatus = (state: RootState) =>
   state.applications.updateApplicationStatus.status;
 
@@ -35,14 +32,47 @@ export const selectGetCandidateApplicationsError = (state: RootState) =>
   state.applications.getCandidateApplications.error;
 
 export const selectGetCandidateApplicationsTotalPages = (state: RootState) => {
-  const { cache, currentQueryKey } = state.applications;
-  return cache[currentQueryKey]?.totalPages || 0;
+  const { userApplicationsCache, currentQueryKeyForUserApplicationsCache } =
+    state.applications;
+  return (
+    userApplicationsCache[currentQueryKeyForUserApplicationsCache]
+      ?.totalPages || 0
+  );
+};
+
+export const selectGetRecruiterApplicationsTotalPages = (state: RootState) => {
+  const {
+    recruiterApplicationsCache,
+    currentQueryKeyForRecruiterApplicationsCache,
+  } = state.applications;
+  return (
+    recruiterApplicationsCache[currentQueryKeyForRecruiterApplicationsCache]
+      ?.totalPages || 0
+  );
 };
 
 export const selectGetCandidateApplicationsRecords = createSelector(
   [selectApplications],
   (applications) => {
-    const { cache, currentQueryKey } = applications;
-    return cache[currentQueryKey]?.candidateApplications || [];
+    const { userApplicationsCache, currentQueryKeyForUserApplicationsCache } =
+      applications;
+    return (
+      userApplicationsCache[currentQueryKeyForUserApplicationsCache]
+        ?.candidateApplications || []
+    );
+  },
+);
+
+export const selectGetRecruiterApplicationsRecords = createSelector(
+  [selectApplications],
+  (applications) => {
+    const {
+      recruiterApplicationsCache,
+      currentQueryKeyForRecruiterApplicationsCache,
+    } = applications;
+    return (
+      recruiterApplicationsCache[currentQueryKeyForRecruiterApplicationsCache]
+        ?.recruiterJobsApplications || []
+    );
   },
 );

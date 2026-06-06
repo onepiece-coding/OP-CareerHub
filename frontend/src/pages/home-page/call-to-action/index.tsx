@@ -17,7 +17,7 @@ const CallToAction = () => {
         <p className={styles.callToActionText}>
           A dynamic team awaits you to work on great projects together.
         </p>
-        <Link to="/jobs">Voir nos offres d'emploi</Link>
+        <Link to="/jobs">Explore our job offers</Link>
       </div>
     </section>
   );

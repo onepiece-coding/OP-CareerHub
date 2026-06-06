@@ -21,24 +21,24 @@ export const HowDoesItWorkItems = [
     id: 1,
     Icon: MagnifyingGlassIcon,
     title: "Search for a position",
-    desc: "Explore our offers available now. Lorem ipsum",
+    desc: "Browse available jobs and find the role that fits your skills and goals.",
   },
   {
     id: 2,
     Icon: ArrowRightEndOnRectangleIcon,
     title: "Apply online",
-    desc: "Complete your application in just a few clicks.",
+    desc: "Submit your application in just a few clicks, quickly and easily.",
   },
   {
     id: 3,
     Icon: UserPlusIcon,
     title: "Take an interview",
-    desc: "If your profile matches, we will contact you.",
+    desc: "Meet with recruiters and showcase your experience and potential.",
   },
   {
     id: 4,
     Icon: CheckCircleIcon,
     title: "Join us!",
-    desc: "Congratulations, you're part of the team!",
+    desc: "Get selected, start your journey, and grow with the right opportunity.",
   },
 ] as const satisfies readonly HowDoesItWorkItem[];

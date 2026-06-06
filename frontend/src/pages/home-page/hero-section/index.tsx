@@ -26,9 +26,8 @@ function HeroSection() {
     >
       <div className={styles.container}>
         <SectionHeader
-          title="Join Our Company Today!"
-          lead="We're recruiting talented people like you! Check out our job
-            openings and take the first step towards a rewarding career."
+          title="Find the Right Talent. Find the Right Job."
+          lead="Whether you are a recruiter searching for top candidates or a job seeker looking for your next opportunity, CareerHub connects both sides in one smart platform."
           id="hero-heading"
           as="h1"
         />
@@ -123,7 +122,7 @@ function HeroSection() {
         </div>
 
         <div className={styles.ctaRow}>
-          <Link to="/jobs">Voir les Offres</Link>
+          <Link to="/jobs">Browse Offers</Link>
         </div>
       </div>
     </section>

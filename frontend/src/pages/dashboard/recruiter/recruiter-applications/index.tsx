@@ -2,30 +2,34 @@
  * @file src/pages/dashboard/recruiter/recruiter-applications/index.tsx
  */
 
+import type { QuerySchema } from "@/store/applications/actions/get-recruiter-jobs-applications";
 import { Button, Card, Spinner, Table, type Column } from "@/components/ui";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { APP_STATUS, type Application } from "@/lib/types";
+import { Link, useSearchParams } from "react-router-dom";
 import { Link as ExternalLink } from "@/components/ui";
 import {
+  selectGetRecruiterApplicationsRecords,
+  selectGetRecruiterApplicationsTotalPages,
   selectGetRecruiterJobsApplicationsError,
   selectGetRecruiterJobsApplicationsStatus,
-  selectRecruiterJobsApplications,
   selectUpdateApplicationStatusError,
   selectUpdateApplicationStatusStatus,
 } from "@/store/applications/applications-selectors";
+import { useEffect, useRef, useState } from "react";
 import {
   clearGetRecruiterJobsApplicationsState,
   clearUpdateApplicationStatusState,
   getRecruiterJobsApplications,
+  setCurrentQueryKeyForRecruiterApplicationsCache,
 } from "@/store/applications/applications-slice";
-import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-
+import { Pagination } from "@/components/common";
 import { EyeIcon } from "@/components/icons";
+
 import UpdateApplicationStatus from "./update-app-status.component";
 
 const RecruiterApplications = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const relatedId = searchParams.get("relatedId");
 
@@ -34,11 +38,11 @@ const RecruiterApplications = () => {
   const updateApplicationStatusErrorHeadingRef =
     useRef<HTMLHeadingElement>(null);
 
+  const [pageNumber, setPageNumber] = useState(1);
   const [retry, setRetry] = useState(0);
 
-  const recruiterJobsApplications = useAppSelector(
-    selectRecruiterJobsApplications,
-  );
+  const totalPages = useAppSelector(selectGetRecruiterApplicationsTotalPages);
+
   const getRecruiterJobsApplicationsStatus = useAppSelector(
     selectGetRecruiterJobsApplicationsStatus,
   );
@@ -51,6 +55,11 @@ const RecruiterApplications = () => {
   const updateApplicationStatusError = useAppSelector(
     selectUpdateApplicationStatusError,
   );
+  const recruiterJobsApplications = useAppSelector(
+    selectGetRecruiterApplicationsRecords,
+  );
+
+  console.log(recruiterJobsApplications);
 
   const dispatch = useAppDispatch();
 
@@ -116,15 +125,29 @@ const RecruiterApplications = () => {
     },
   ];
 
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+  };
+
   useEffect(() => {
-    const promise = dispatch(getRecruiterJobsApplications());
+    const body: QuerySchema = {
+      page: pageNumber,
+      limit: 2,
+    };
+
+    if (relatedId) body._id = relatedId;
+
+    dispatch(setCurrentQueryKeyForRecruiterApplicationsCache(body));
+
+    const promise = dispatch(getRecruiterJobsApplications(body));
 
     return () => {
       promise?.abort();
       dispatch(clearGetRecruiterJobsApplicationsState());
       dispatch(clearUpdateApplicationStatusState());
+      setSearchParams("");
     };
-  }, [dispatch, retry]);
+  }, [dispatch, retry, pageNumber, relatedId, setSearchParams]);
 
   // ✅ Shift focus to the new heading when state transitions
   useEffect(() => {
@@ -213,7 +236,8 @@ const RecruiterApplications = () => {
                 The recruiter jobs applications
               </h1>
               <p className="card-header--subheading">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Review applications received for your job postings and select
+                the best candidates.
               </p>
             </Card.Header>
             <Card.Body>
@@ -222,13 +246,36 @@ const RecruiterApplications = () => {
                 columns={columns}
                 rowKey="_id"
               />
+
+              {totalPages > 1 && (
+                <Pagination
+                  handlePageChange={handlePageChange}
+                  totalPages={totalPages}
+                  pageNumber={pageNumber}
+                />
+              )}
             </Card.Body>
-            <Card.Footer className={"to-footer"}>
-              <p>
-                Get back to your jobs list?{" "}
-                <Link to="/dashboard/recruiter-jobs">here</Link>
-              </p>
-            </Card.Footer>
+            {relatedId ? (
+              <Card.Footer className={"to-footer"}>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    variant="slate"
+                    onClick={() => {
+                      setSearchParams("");
+                    }}
+                  >
+                    Refresh
+                  </Button>
+                </div>
+              </Card.Footer>
+            ) : (
+              <Card.Footer className={"to-footer"}>
+                <p>
+                  Get back to your jobs list?{" "}
+                  <Link to="/dashboard/recruiter-jobs">here</Link>
+                </p>
+              </Card.Footer>
+            )}
           </Card>
         </div>
       </>

@@ -2,6 +2,7 @@
  * @file src/store/applications/applications-slice.ts
  */
 
+import type { QuerySchema } from "./actions/get-candidate-applications";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Application, OperationState } from "@/lib/types";
 import { handlePending, handleRejected } from "@/lib/utils";
@@ -9,11 +10,15 @@ import { handlePending, handleRejected } from "@/lib/utils";
 import getRecruiterJobsApplications from "./actions/get-recruiter-jobs-applications";
 import getCandidateApplications from "./actions/get-candidate-applications";
 import updateApplicationStatus from "./actions/update-application-status";
-import type { QuerySchema } from "./actions/get-candidate-applications";
 import applyInJob from "./actions/apply-in-job";
 
-interface CacheData {
+interface UserApplicationsCacheData {
   candidateApplications: Application[];
+  totalPages: number;
+}
+
+interface RecruiterApplicationsCacheData {
+  recruiterJobsApplications: Application[];
   totalPages: number;
 }
 
@@ -23,10 +28,10 @@ interface ApplicationState {
   updateApplicationStatus: OperationState;
   applyInJob: OperationState;
 
-  recruiterJobsApplications: Application[];
-
-  cache: Record<string, CacheData>;
-  currentQueryKey: string;
+  recruiterApplicationsCache: Record<string, RecruiterApplicationsCacheData>;
+  userApplicationsCache: Record<string, UserApplicationsCacheData>;
+  currentQueryKeyForRecruiterApplicationsCache: string;
+  currentQueryKeyForUserApplicationsCache: string;
 }
 
 const initialState: ApplicationState = {
@@ -35,10 +40,10 @@ const initialState: ApplicationState = {
   updateApplicationStatus: { status: "idle", error: null },
   applyInJob: { status: "idle", error: null },
 
-  recruiterJobsApplications: [],
-
-  cache: {},
-  currentQueryKey: "",
+  currentQueryKeyForRecruiterApplicationsCache: "",
+  currentQueryKeyForUserApplicationsCache: "",
+  recruiterApplicationsCache: {},
+  userApplicationsCache: {},
 };
 
 export const getCacheKey = (query: QuerySchema) => {
@@ -67,20 +72,41 @@ const applicationsSlice = createSlice({
     },
 
     // New reducer to sync the active UI query with the store
-    setCurrentQuery: (state, action: PayloadAction<QuerySchema>) => {
+    setCurrentQueryKeyForUserApplicationsCache: (
+      state,
+      action: PayloadAction<QuerySchema>,
+    ) => {
       const key = getCacheKey(action.payload); // 1
-      state.currentQueryKey = key; // 1-
+      state.currentQueryKeyForUserApplicationsCache = key; // 1-
 
       // If data is already cached, set status to succeeded immediately
       // so the UI bypasses the loading spinner.
-      if (state.cache[key]) {
+      if (state.userApplicationsCache[key]) {
         state.getCandidateApplications.status = "succeeded";
         state.getCandidateApplications.error = null;
       } else {
         state.getCandidateApplications.status = "idle";
       }
     },
+
+    setCurrentQueryKeyForRecruiterApplicationsCache: (
+      state,
+      action: PayloadAction<QuerySchema>,
+    ) => {
+      const key = getCacheKey(action.payload); // 1
+      state.currentQueryKeyForRecruiterApplicationsCache = key; // 1-
+
+      // If data is already cached, set status to succeeded immediately
+      // so the UI bypasses the loading spinner.
+      if (state.recruiterApplicationsCache[key]) {
+        state.getRecruiterJobsApplications.status = "succeeded";
+        state.getRecruiterJobsApplications.error = null;
+      } else {
+        state.getRecruiterJobsApplications.status = "idle";
+      }
+    },
   },
+
   extraReducers: (builder) => {
     // Apply In Job
     builder.addCase(applyInJob.pending, (state) => {
@@ -99,7 +125,14 @@ const applicationsSlice = createSlice({
     });
     builder.addCase(getRecruiterJobsApplications.fulfilled, (state, action) => {
       state.getRecruiterJobsApplications.status = "succeeded";
-      state.recruiterJobsApplications = action.payload.result;
+
+      // Store the newly fetched data in our cache using the requested arguments
+      const key = getCacheKey(action.meta.arg);
+      state.recruiterApplicationsCache[key] = {
+        totalPages: action.payload.pagination.totalPages,
+        recruiterJobsApplications: action.payload.data,
+      };
+      state.currentQueryKeyForRecruiterApplicationsCache = key;
     });
     builder.addCase(getRecruiterJobsApplications.rejected, (state, action) => {
       handleRejected(state, "getRecruiterJobsApplications", action);
@@ -111,11 +144,16 @@ const applicationsSlice = createSlice({
     });
     builder.addCase(updateApplicationStatus.fulfilled, (state, action) => {
       state.updateApplicationStatus.status = "succeeded";
-      const index = state.recruiterJobsApplications.findIndex(
+
+      const key = state.currentQueryKeyForRecruiterApplicationsCache;
+      const recruiterJobsApplications =
+        state.recruiterApplicationsCache[key].recruiterJobsApplications;
+
+      const index = recruiterJobsApplications.findIndex(
         (app) => app._id === action.meta.arg.applicationId,
       );
       if (index !== -1) {
-        state.recruiterJobsApplications.splice(index, 1, action.payload.data);
+        recruiterJobsApplications.splice(index, 1, action.payload.data);
       }
     });
     builder.addCase(updateApplicationStatus.rejected, (state, action) => {
@@ -131,11 +169,11 @@ const applicationsSlice = createSlice({
 
       // Store the newly fetched data in our cache using the requested arguments
       const key = getCacheKey(action.meta.arg);
-      state.cache[key] = {
+      state.userApplicationsCache[key] = {
         totalPages: action.payload.pagination.totalPages,
         candidateApplications: action.payload.data,
       };
-      state.currentQueryKey = key;
+      state.currentQueryKeyForUserApplicationsCache = key;
     });
     builder.addCase(getCandidateApplications.rejected, (state, action) => {
       handleRejected(state, "getCandidateApplications", action);
@@ -144,11 +182,12 @@ const applicationsSlice = createSlice({
 });
 
 export const {
+  setCurrentQueryKeyForRecruiterApplicationsCache,
+  setCurrentQueryKeyForUserApplicationsCache,
   clearGetRecruiterJobsApplicationsState,
   clearGetCandidateApplicationsState,
   clearUpdateApplicationStatusState,
   clearApplyInJobState,
-  setCurrentQuery,
 } = applicationsSlice.actions;
 
 export {

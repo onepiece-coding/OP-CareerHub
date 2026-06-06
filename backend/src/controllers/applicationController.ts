@@ -77,19 +77,44 @@ export const getCandidateApplicationsCtrl = asyncHandler(
 ----------------------------------------------------*/
 export const getRecruiterJobsApplicationsCtrl = asyncHandler(
   async (req: Request, res: Response) => {
-    const filter = { recruiterId: req.user?._id } as any;
+    const {
+      limit: limitParam,
+      page: pageParam,
+      ...filters
+    } = (req.query as any) || {};
 
-    const result = await Application.find(filter).populate('jobId');
-    const totalJobsApplications = await Application.countDocuments(filter);
+    filters.recruiterId = req.user?._id;
 
-    if (!result || result.length === 0) {
+    const page = Math.max(parseInt(String(pageParam), 10) || 1, 1);
+    const limit = Math.max(parseInt(String(limitParam), 10) || 5, 1);
+    const skip = (page - 1) * limit;
+
+    const [applications, totalJobsApplications] = await Promise.all([
+      Application.find(filters)
+        .skip(skip)
+        .limit(limit)
+        .populate('jobId')
+        .lean(),
+      Application.countDocuments(filters),
+    ]);
+
+    const pageCount = Math.ceil(totalJobsApplications / limit);
+
+    if (!applications || applications.length === 0) {
       throw createError(404, 'No Application is found');
     }
 
     res.status(200).json({
       status: true,
-      totalJobsApplications,
-      result,
+      count: applications.length,
+      total: totalJobsApplications,
+      pagination: {
+        current: page,
+        limit,
+        totalPages: pageCount,
+        results: totalJobsApplications,
+      },
+      data: applications,
     });
   },
 );
