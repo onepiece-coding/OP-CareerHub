@@ -7,7 +7,7 @@ oversee the system.
 The project includes:
 
 - **Backend:** Node.js + Express + TypeScript + MongoDB
-- **Frontend:** _(To be filled by frontend developer)_
+- **Frontend:** React + TypeScript + Redux Toolkit + React Router + Vite
 - **Authentication:** JWT with access & refresh tokens
 - **Real-time notifications:** Socket.IO
 - **Email services:** Brevo
@@ -106,7 +106,15 @@ Cloudinary (File Storage)
 
 # Frontend Stack
 
-_(To be filled by frontend developer)_
+- React
+- TypeScript
+- Redux Toolkit
+- React Router V6
+- Vite
+- CSS Modules
+- Custom useForm hook
+- Custom validation library
+- Custom toast system
 
 ---
 
