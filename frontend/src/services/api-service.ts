@@ -9,7 +9,7 @@ const api = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
       ? "http://localhost:8000/api/v1"
-      : "https://op-careerhub-backend.onrender.com/",
+      : "https://op-careerhub-backend.onrender.com/api/v1",
   withCredentials: true,
 });
 
