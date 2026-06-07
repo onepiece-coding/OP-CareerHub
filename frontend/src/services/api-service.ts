@@ -69,7 +69,7 @@ api.interceptors.response.use(
         store.dispatch(logoutUser());
 
         if (!window.location.pathname.includes("/auth/login")) {
-          window.location.href = "/op-career-hub/auth/login";
+          window.location.href = "/auth/login";
         }
 
         return Promise.reject(refreshError);
