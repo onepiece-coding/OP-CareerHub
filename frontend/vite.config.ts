@@ -14,7 +14,7 @@ export default defineConfig({
     },
   },
 
-  base: "/op-career-hub/",
+  // base: "/op-career-hub/",
 
   server: {
     port: 3000,

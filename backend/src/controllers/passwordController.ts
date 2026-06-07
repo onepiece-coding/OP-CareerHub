@@ -33,7 +33,7 @@ export const sendResetPasswordLinkCtrl = asyncHandler(
       await verificationToken.save();
     }
 
-    const link = `${env.CLIENT_DOMAIN}/op-career-hub/password/verify-reset-token/${user._id}/${verificationToken.token}`;
+    const link = `${env.CLIENT_DOMAIN}/password/verify-reset-token/${user._id}/${verificationToken.token}`;
 
     const htmlTemplate = `<a href="${link}">Click here to reset your password</a>`;
 

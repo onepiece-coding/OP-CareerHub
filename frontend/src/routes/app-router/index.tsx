@@ -198,7 +198,7 @@ const routes = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/op-career-hub/" },
+  // { basename: "/op-career-hub/" },
 );
 
 const AppRouter = () => {
