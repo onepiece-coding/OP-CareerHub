@@ -58,17 +58,15 @@ app.use(
 );
 app.use(hpp());
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use(
-    cors({
-      origin: allowedOrigin === '*' ? true : allowedOrigin,
-      methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-      credentials: allowedOrigin !== '*',
-      exposedHeaders: ['Content-Disposition'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    }),
-  );
-}
+app.use(
+  cors({
+    origin: allowedOrigin === '*' ? true : allowedOrigin,
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+    credentials: allowedOrigin !== '*',
+    exposedHeaders: ['Content-Disposition'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  }),
+);
 
 // create limiter instance
 const limiterInstance = rateLimit({
