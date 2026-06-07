@@ -114,6 +114,28 @@ describe('application controllers (unit)', () => {
      GET RECRUITER APPLICATIONS
   ====================================================== */
 
+  // it('getRecruiterJobsApplicationsCtrl returns recruiter applications', async () => {
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const mod = await import('../../src/controllers/applicationController.js');
+
+  //   const result = [{ _id: 'app1' }];
+
+  //   (Application.find as any).mockImplementation(() => ({
+  //     populate: () => Promise.resolve(result),
+  //   }));
+
+  //   Application.countDocuments.mockResolvedValueOnce(1);
+
+  //   const req: any = { user: { _id: 'rec1' } };
+  //   const res: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+
+  //   await mod.getRecruiterJobsApplicationsCtrl(req, res, vi.fn());
+
+  //   expect(Application.find).toHaveBeenCalledWith({ recruiterId: 'rec1' });
+  //   expect(res.status).toHaveBeenCalledWith(200);
+  // });
+
   it('getRecruiterJobsApplicationsCtrl returns recruiter applications', async () => {
     const Application = (await import('../../src/models/Application.js'))
       .default as any;
@@ -122,19 +144,54 @@ describe('application controllers (unit)', () => {
     const result = [{ _id: 'app1' }];
 
     (Application.find as any).mockImplementation(() => ({
-      populate: () => Promise.resolve(result),
+      skip: () => ({
+        limit: () => ({
+          populate: () => ({
+            lean: () => Promise.resolve(result),
+          }),
+        }),
+      }),
     }));
 
     Application.countDocuments.mockResolvedValueOnce(1);
 
-    const req: any = { user: { _id: 'rec1' } };
+    const req: any = { user: { _id: 'rec1' }, query: {} };
     const res: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
 
     await mod.getRecruiterJobsApplicationsCtrl(req, res, vi.fn());
 
     expect(Application.find).toHaveBeenCalledWith({ recruiterId: 'rec1' });
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        status: true,
+        count: 1,
+        total: 1,
+        data: result,
+      }),
+    );
   });
+
+  // it('getRecruiterJobsApplicationsCtrl throws when no applications', async () => {
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const mod = await import('../../src/controllers/applicationController.js');
+
+  //   (Application.find as any).mockImplementation(() => ({
+  //     populate: () => Promise.resolve([]),
+  //   }));
+
+  //   const req: any = { user: { _id: 'rec1' } };
+  //   const res: any = { status: vi.fn(), json: vi.fn() };
+  //   const next = vi.fn();
+
+  //   await mod.getRecruiterJobsApplicationsCtrl(req, res, next);
+
+  //   expect(next).toHaveBeenCalled();
+  //   expect(String(next.mock.calls[0][0].message)).toMatch(
+  //     /No Application is found/i,
+  //   );
+  // });
 
   it('getRecruiterJobsApplicationsCtrl throws when no applications', async () => {
     const Application = (await import('../../src/models/Application.js'))
@@ -142,10 +199,16 @@ describe('application controllers (unit)', () => {
     const mod = await import('../../src/controllers/applicationController.js');
 
     (Application.find as any).mockImplementation(() => ({
-      populate: () => Promise.resolve([]),
+      skip: () => ({
+        limit: () => ({
+          populate: () => ({
+            lean: () => Promise.resolve([]),
+          }),
+        }),
+      }),
     }));
 
-    const req: any = { user: { _id: 'rec1' } };
+    const req: any = { user: { _id: 'rec1' }, query: {} };
     const res: any = { status: vi.fn(), json: vi.fn() };
     const next = vi.fn();
 
@@ -208,6 +271,37 @@ describe('application controllers (unit)', () => {
     expect(String(next.mock.calls[0][0].message)).toMatch(/Job not found/i);
   });
 
+  // it('applyInJobCtrl requires resume', async () => {
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const Job = (await import('../../src/models/Job.js')).default as any;
+  //   const User = (await import('../../src/models/User.js')).default as any;
+  //   const mod = await import('../../src/controllers/applicationController.js');
+
+  //   Application.findOne.mockResolvedValueOnce(null);
+
+  //   Job.findById.mockImplementationOnce(() => ({
+  //     select: () => Promise.resolve({ createdBy: 'rec1' }),
+  //   }));
+
+  //   User.findById.mockImplementationOnce(() => ({
+  //     select: () => Promise.resolve({ resume: {} }),
+  //   }));
+
+  //   const req: any = {
+  //     body: { jobId: 'j1' },
+  //     user: { _id: 'user1' },
+  //   };
+
+  //   const next = vi.fn();
+  //   const res: any = { status: vi.fn(), json: vi.fn() };
+
+  //   await mod.applyInJobCtrl(req, res, next);
+
+  //   expect(next).toHaveBeenCalled();
+  //   expect(String(next.mock.calls[0][0].message)).toMatch(/upload a resume/i);
+  // });
+
   it('applyInJobCtrl requires resume', async () => {
     const Application = (await import('../../src/models/Application.js'))
       .default as any;
@@ -218,7 +312,8 @@ describe('application controllers (unit)', () => {
     Application.findOne.mockResolvedValueOnce(null);
 
     Job.findById.mockImplementationOnce(() => ({
-      select: () => Promise.resolve({ createdBy: 'rec1' }),
+      select: () =>
+        Promise.resolve({ createdBy: 'rec1', jobStatus: 'pending' }),
     }));
 
     User.findById.mockImplementationOnce(() => ({
@@ -239,6 +334,45 @@ describe('application controllers (unit)', () => {
     expect(String(next.mock.calls[0][0].message)).toMatch(/upload a resume/i);
   });
 
+  // it('applyInJobCtrl applies successfully and sends notification', async () => {
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const Job = (await import('../../src/models/Job.js')).default as any;
+  //   const User = (await import('../../src/models/User.js')).default as any;
+  //   const Notification = (await import('../../src/models/Notification.js'))
+  //     .default as any;
+  //   const socket = await import('../../src/services/socketService.js');
+  //   const mod = await import('../../src/controllers/applicationController.js');
+
+  //   Application.findOne.mockResolvedValueOnce(null);
+
+  //   Job.findById.mockImplementationOnce(() => ({
+  //     select: () => Promise.resolve({ createdBy: 'rec1' }),
+  //   }));
+
+  //   User.findById.mockImplementationOnce(() => ({
+  //     select: () =>
+  //       Promise.resolve({
+  //         resume: { url: 'url', publicId: 'pid' },
+  //       }),
+  //   }));
+
+  //   Notification.create.mockResolvedValueOnce({});
+
+  //   const req: any = {
+  //     body: { jobId: 'j1' },
+  //     user: { _id: 'user1' },
+  //   };
+
+  //   const res: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+
+  //   await mod.applyInJobCtrl(req, res, vi.fn());
+
+  //   expect(Notification.create).toHaveBeenCalled();
+  //   expect(socket.sendNotification).toHaveBeenCalled();
+  //   expect(res.status).toHaveBeenCalledWith(201);
+  // });
+
   it('applyInJobCtrl applies successfully and sends notification', async () => {
     const Application = (await import('../../src/models/Application.js'))
       .default as any;
@@ -252,7 +386,8 @@ describe('application controllers (unit)', () => {
     Application.findOne.mockResolvedValueOnce(null);
 
     Job.findById.mockImplementationOnce(() => ({
-      select: () => Promise.resolve({ createdBy: 'rec1' }),
+      select: () =>
+        Promise.resolve({ createdBy: 'rec1', jobStatus: 'pending' }),
     }));
 
     User.findById.mockImplementationOnce(() => ({
@@ -305,6 +440,48 @@ describe('application controllers (unit)', () => {
     expect(String(next.mock.calls[0][0].message)).toMatch(/Not authorized/i);
   });
 
+  // it('updateApplicationStatusCtrl updates status and sends notification', async () => {
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const Job = (await import('../../src/models/Job.js')).default as any;
+  //   const Notification = (await import('../../src/models/Notification.js'))
+  //     .default as any;
+  //   const socket = await import('../../src/services/socketService.js');
+  //   const mod = await import('../../src/controllers/applicationController.js');
+
+  //   Job.findById.mockImplementationOnce(() => ({
+  //     select: () => Promise.resolve({ createdBy: 'rec1' }),
+  //   }));
+
+  //   Application.findOne.mockResolvedValueOnce({
+  //     _id: 'app1',
+  //     status: 'pending',
+  //   });
+
+  //   Application.findByIdAndUpdate.mockResolvedValueOnce({
+  //     _id: 'app1',
+  //     status: 'accepted',
+  //     applicantId: 'user1',
+  //   });
+
+  //   Notification.create.mockResolvedValueOnce({});
+
+  //   const req: any = {
+  //     params: { id: 'app1' },
+  //     body: { jobId: 'j1', status: 'accepted' },
+  //     user: { _id: 'rec1' },
+  //   };
+
+  //   const res: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+
+  //   await mod.updateApplicationStatusCtrl(req, res, vi.fn());
+
+  //   expect(Application.findByIdAndUpdate).toHaveBeenCalled();
+  //   expect(Notification.create).toHaveBeenCalled();
+  //   expect(socket.sendNotification).toHaveBeenCalled();
+  //   expect(res.status).toHaveBeenCalledWith(200);
+  // });
+
   it('updateApplicationStatusCtrl updates status and sends notification', async () => {
     const Application = (await import('../../src/models/Application.js'))
       .default as any;
@@ -323,11 +500,14 @@ describe('application controllers (unit)', () => {
       status: 'pending',
     });
 
-    Application.findByIdAndUpdate.mockResolvedValueOnce({
-      _id: 'app1',
-      status: 'accepted',
-      applicantId: 'user1',
-    });
+    Application.findByIdAndUpdate.mockImplementationOnce(() => ({
+      populate: () =>
+        Promise.resolve({
+          _id: 'app1',
+          status: 'accepted',
+          applicantId: 'user1',
+        }),
+    }));
 
     Notification.create.mockResolvedValueOnce({});
 

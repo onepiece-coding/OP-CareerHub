@@ -193,7 +193,84 @@ describe('job controllers (unit)', () => {
     );
   });
 
-  it('updateSingleJobCtrl handles not found, nothing to update and success with notifications', async () => {
+  // it('updateSingleJobCtrl handles not found, nothing to update and success with notifications', async () => {
+  //   const Job = (await import('../../src/models/Job.js')).default as any;
+  //   const Application = (await import('../../src/models/Application.js'))
+  //     .default as any;
+  //   const Notification = (await import('../../src/models/Notification.js'))
+  //     .default as any;
+  //   const socket = await import('../../src/services/socketService.js');
+  //   const mod = await import('../../src/controllers/jobController.js');
+
+  //   // not found
+  //   (Job.findOne as any).mockResolvedValueOnce(null);
+  //   const req0: any = { params: { id: 'x' }, body: {} };
+  //   const res0: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+  //   const next0 = vi.fn();
+  //   await mod.updateSingleJobCtrl(req0, res0, next0);
+  //   expect(next0).toHaveBeenCalled();
+  //   expect(String(next0.mock.calls[0][0].message)).toMatch(/Job not found/i);
+
+  //   // nothing to update (jobStatus same)
+  //   const jobBefore = { _id: 'j2', jobStatus: 'open', createdBy: 'rec1' };
+  //   (Job.findOne as any).mockResolvedValueOnce(jobBefore);
+  //   const req1: any = {
+  //     params: { id: 'j2' },
+  //     body: { jobStatus: 'open' },
+  //     user: { _id: 'rec1' },
+  //   };
+  //   const res1: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+  //   const next1 = vi.fn();
+  //   await mod.updateSingleJobCtrl(req1, res1, next1);
+  //   expect(next1).toHaveBeenCalled();
+  //   expect(String(next1.mock.calls[0][0].message)).toMatch(
+  //     /Nothing to update/i,
+  //   );
+
+  //   // success path
+  //   const updatedJob = { _id: 'j3', jobStatus: 'closed' };
+  //   (Job.findOne as any).mockResolvedValueOnce({
+  //     _id: 'j3',
+  //     jobStatus: 'open',
+  //     createdBy: 'rec2',
+  //   });
+  //   (Job.findByIdAndUpdate as any).mockResolvedValueOnce(updatedJob);
+
+  //   // applications that applied to this job
+  //   const apps = [
+  //     { applicantId: 'a1', _id: 'app1' },
+  //     { applicantId: 'a2', _id: 'app2' },
+  //   ];
+  //   (Application.find as any).mockResolvedValueOnce(apps);
+
+  //   Notification.insertMany.mockResolvedValueOnce([
+  //     { recipient: 'a1' },
+  //     { recipient: 'a2' },
+  //   ]);
+
+  //   const req2: any = {
+  //     params: { id: 'j3' },
+  //     body: { jobStatus: 'closed' },
+  //     user: { _id: 'rec2' },
+  //   };
+  //   const res2: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+
+  //   await mod.updateSingleJobCtrl(req2, res2, vi.fn());
+
+  //   // Notification insert and sendNotification invoked for each application
+  //   expect(Notification.insertMany).toHaveBeenCalled();
+  //   expect(socket.sendNotification).toHaveBeenCalledTimes(2);
+  //   expect(res2.status).toHaveBeenCalledWith(200);
+  //   expect(res2.json).toHaveBeenCalledWith(
+  //     expect.objectContaining({
+  //       status: true,
+  //       message: 'Job Updated',
+  //       result: updatedJob,
+  //     }),
+  //   );
+  // });
+
+  it('updateSingleJobCtrl handles not found, forbidden user, and success with notifications', async () => {
     const Job = (await import('../../src/models/Job.js')).default as any;
     const Application = (await import('../../src/models/Application.js'))
       .default as any;
@@ -202,47 +279,47 @@ describe('job controllers (unit)', () => {
     const socket = await import('../../src/services/socketService.js');
     const mod = await import('../../src/controllers/jobController.js');
 
-    // not found
     (Job.findOne as any).mockResolvedValueOnce(null);
-    const req0: any = { params: { id: 'x' }, body: {} };
+    const req0: any = { params: { id: 'x' }, body: {}, user: { _id: 'u1' } };
     const res0: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
     const next0 = vi.fn();
     await mod.updateSingleJobCtrl(req0, res0, next0);
     expect(next0).toHaveBeenCalled();
     expect(String(next0.mock.calls[0][0].message)).toMatch(/Job not found/i);
 
-    // nothing to update (jobStatus same)
-    const jobBefore = { _id: 'j2', jobStatus: 'open', createdBy: 'rec1' };
+    const jobBefore = { _id: 'j2', jobStatus: 'open', createdBy: 'owner1' };
     (Job.findOne as any).mockResolvedValueOnce(jobBefore);
-    const req1: any = {
+    const reqForbidden: any = {
       params: { id: 'j2' },
       body: { jobStatus: 'open' },
-      user: { _id: 'rec1' },
+      user: { _id: 'other1', role: 'recruiter' },
     };
-    const res1: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
-    const next1 = vi.fn();
-    await mod.updateSingleJobCtrl(req1, res1, next1);
-    expect(next1).toHaveBeenCalled();
-    expect(String(next1.mock.calls[0][0].message)).toMatch(
-      /Nothing to update/i,
+    const resForbidden: any = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn(),
+    };
+    const nextForbidden = vi.fn();
+    await mod.updateSingleJobCtrl(reqForbidden, resForbidden, nextForbidden);
+    expect(nextForbidden).toHaveBeenCalled();
+    expect(String(nextForbidden.mock.calls[0][0].message)).toMatch(
+      /permission to update this job/i,
     );
 
-    // success path
-    const updatedJob = { _id: 'j3', jobStatus: 'closed' };
     (Job.findOne as any).mockResolvedValueOnce({
       _id: 'j3',
       jobStatus: 'open',
       createdBy: 'rec2',
     });
-    (Job.findByIdAndUpdate as any).mockResolvedValueOnce(updatedJob);
+    (Job.findByIdAndUpdate as any).mockResolvedValueOnce({
+      _id: 'j3',
+      jobStatus: 'closed',
+    });
 
-    // applications that applied to this job
     const apps = [
       { applicantId: 'a1', _id: 'app1' },
       { applicantId: 'a2', _id: 'app2' },
     ];
     (Application.find as any).mockResolvedValueOnce(apps);
-
     Notification.insertMany.mockResolvedValueOnce([
       { recipient: 'a1' },
       { recipient: 'a2' },
@@ -251,13 +328,17 @@ describe('job controllers (unit)', () => {
     const req2: any = {
       params: { id: 'j3' },
       body: { jobStatus: 'closed' },
-      user: { _id: 'rec2' },
+      user: { _id: 'rec2', role: 'recruiter' },
     };
     const res2: any = { status: vi.fn().mockReturnThis(), json: vi.fn() };
 
     await mod.updateSingleJobCtrl(req2, res2, vi.fn());
 
-    // Notification insert and sendNotification invoked for each application
+    expect(Job.findByIdAndUpdate).toHaveBeenCalledWith(
+      'j3',
+      { jobStatus: 'closed' },
+      expect.any(Object),
+    );
     expect(Notification.insertMany).toHaveBeenCalled();
     expect(socket.sendNotification).toHaveBeenCalledTimes(2);
     expect(res2.status).toHaveBeenCalledWith(200);
@@ -265,7 +346,7 @@ describe('job controllers (unit)', () => {
       expect.objectContaining({
         status: true,
         message: 'Job Updated',
-        result: updatedJob,
+        result: { _id: 'j3', jobStatus: 'closed' },
       }),
     );
   });

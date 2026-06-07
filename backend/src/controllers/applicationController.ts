@@ -136,7 +136,9 @@ export const applyInJobCtrl = asyncHandler(
       throw createError(409, 'Already Applied');
     }
 
-    const job = await Job.findById(req.body.jobId).select('createdBy');
+    const job = await Job.findById(req.body.jobId).select(
+      'createdBy jobStatus',
+    );
     if (!job) {
       throw createError(404, 'Job not found!');
     }
