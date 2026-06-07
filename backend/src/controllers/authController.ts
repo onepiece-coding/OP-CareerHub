@@ -20,7 +20,6 @@ import Notification from '../models/Notification.js';
  */
 const ACCESS_COOKIE_NAME = 'access_token';
 const REFRESH_COOKIE_NAME = 'refresh_token';
-
 function getCookieOptions({ isRefresh = false } = {}) {
   const secure = env.COOKIE_SECURE ?? env.NODE_ENV === 'production';
   const maxAge = isRefresh
@@ -30,10 +29,9 @@ function getCookieOptions({ isRefresh = false } = {}) {
   return {
     httpOnly: true,
     secure,
-    sameSite: 'lax' as const,
+    sameSite: 'none' as const,
     path: '/',
     maxAge,
-    // domain: set if you want shared cookies across subdomains (optional)
   };
 }
 

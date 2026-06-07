@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import { errorHandler, notFound } from './middlewares/error.js';
 import { env } from './env.js';
 import rootRouter from './routes/index.js';
-import path from 'path';
 
 // Initialize app
 const app: Application = express();
