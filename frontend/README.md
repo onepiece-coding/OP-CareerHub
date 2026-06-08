@@ -22,14 +22,6 @@
 
 🚀 **[careerhub.example.com](https://careerhub.example.com)**
 
-**Test credentials**
-
-| Role | Email | Password |
-|---|---|---|
-| Admin | admin@careerhub.com | Admin@1234 |
-| Recruiter | recruiter@careerhub.com | Recruiter@1234 |
-| User | user@careerhub.com | User@1234 |
-
 ---
 
 ## 🚀 Features
