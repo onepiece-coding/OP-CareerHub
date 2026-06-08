@@ -23,15 +23,7 @@ The project includes:
 - Backend Stack
 - Frontend Stack
 - Project Structure
-- Environment Variables
-- Installation
-- Running the Project
-- Testing
-- API Overview
-- Authentication Flow
-- Real-time Notifications
-- File Uploads
-- Deployment
+- Test Credentials
 - Contributors
 - License
 
@@ -115,6 +107,16 @@ Cloudinary (File Storage)
 - Custom useForm hook
 - Custom validation library
 - Custom toast system
+
+---
+
+# Test credentials
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@careerhub.com | Admin@1234 |
+| Recruiter | recruiter@careerhub.com | Recruiter@1234 |
+| User | user@careerhub.com | User@1234 |
 
 ---
 
