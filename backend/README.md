@@ -6,6 +6,7 @@ Backend for the **op-careerhub** job-search application — Node.js + TypeScript
 
 ## Table of contents
 
+- [Live Demo](#live-demo)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
@@ -18,6 +19,18 @@ Backend for the **op-careerhub** job-search application — Node.js + TypeScript
 - [Deployment hints](#deployment-hints)
 - [Contributing](#contributing)
 - [License](#license)
+
+---
+
+## ✨ Live Demo
+
+🚀 **[careerhub.example.com](https://careerhub.example.com)**
+
+| Repository | Description |
+|---|---|
+| **This repo** | Express & MongoDB — backend only |
+| [CareerHub Frontend](https://github.com/onepiece-coding/OP-CareerHub/tree/main/frontend) | React + TypeScript |
+| [CareerHub Monorepo](https://github.com/onepiece-coding/OP-CareerHub) | Full-stack — frontend + backend together |
 
 ---
 
