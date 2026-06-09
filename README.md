@@ -110,7 +110,11 @@ Cloudinary (File Storage)
 
 ---
 
-# Test credentials
+## ✨ Live Demo
+
+🚀 **[https://op-career-hub-frontend.vercel.app/](https://op-career-hub-frontend.vercel.app/)**
+
+**Test credentials**
 
 | Role | Email | Password |
 |---|---|---|
