@@ -114,9 +114,9 @@ Cloudinary (File Storage)
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | admin@careerhub.com | Admin@1234 |
-| Recruiter | recruiter@careerhub.com | Recruiter@1234 |
-| User | user@careerhub.com | User@1234 |
+| Admin | admin@careerhub.com | Pass@1234 |
+| Recruiter | recruiter@careerhub.com | Pass@1234 |
+| User | user@careerhub.com | Pass@1234 |
 
 ---
 
