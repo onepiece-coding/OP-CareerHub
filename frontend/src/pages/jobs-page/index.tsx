@@ -69,6 +69,10 @@ const JobsPage = () => {
 
   const columns: Column<Job>[] = [
     {
+      header: "Job Position",
+      key: "position",
+    },
+    {
       header: "Job Vacancy",
       key: "jobVacancy",
     },
@@ -79,10 +83,6 @@ const JobsPage = () => {
     {
       header: "Job Deadline",
       key: "jobDeadline",
-    },
-    {
-      header: "Job Location",
-      key: "jobLocation",
     },
     {
       header: "Actions",
@@ -137,7 +137,7 @@ const JobsPage = () => {
   useEffect(() => {
     const querySchema: QuerySchema = {
       page: pageNumber,
-      limit: 3,
+      limit: 10,
       search,
       sort,
     };

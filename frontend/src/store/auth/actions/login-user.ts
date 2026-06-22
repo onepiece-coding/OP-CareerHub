@@ -5,9 +5,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { LoginValues } from "@/validations";
 import { axiosErrorHandler } from "@/lib/utils";
+import type { User } from "@/lib/types";
 
 import api from "@/services/api-service";
-import type { User } from "@/lib/types";
 
 type LoginPayload = LoginValues;
 
@@ -27,6 +27,7 @@ const loginUser = createAsyncThunk(
       if (import.meta.env.MODE === "development") {
         console.error("Login User:", error);
       }
+
       return rejectWithValue(axiosErrorHandler(error));
     }
   },

@@ -99,8 +99,8 @@ const JobDetails = () => {
                   />
                   <InfoCard
                     IconComponent={IdentificationIcon}
-                    desc={singleJob?.jobVacancy || "Not available"}
-                    title={"Offer details"}
+                    desc={singleJob?.jobLocation || "Not available"}
+                    title={"Job location"}
                   />
                   <InfoCard
                     IconComponent={ListBulletIcon}

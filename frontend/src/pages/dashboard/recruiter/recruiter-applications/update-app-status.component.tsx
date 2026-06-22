@@ -46,7 +46,11 @@ const UpdateApplicationStatus = ({
       dispatch(
         addToast({
           type: "success",
-          message: "Job status updated to be accepted",
+          message: `Job status updated to be ${
+            action === "toBeAccepted"
+              ? APP_STATUS.ACCEPTED
+              : APP_STATUS.REJECTED
+          }`,
         }),
       );
     } catch (error) {

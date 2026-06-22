@@ -81,7 +81,7 @@ const CandidateApplications = () => {
   useEffect(() => {
     const body: QuerySchema = {
       page: pageNumber,
-      limit: 2,
+      limit: 10,
     };
 
     if (relatedId) body._id = relatedId;

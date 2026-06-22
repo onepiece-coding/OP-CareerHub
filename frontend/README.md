@@ -20,15 +20,15 @@
 
 ## ✨ Live Demo
 
-🚀 **[careerhub.example.com](https://careerhub.example.com)**
+🚀 **[careerhub.example.com](https://op-career-hub-frontend.vercel.app/)**
 
 **Test credentials**
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | admin@careerhub.com | Admin@1234 |
-| Recruiter | recruiter@careerhub.com | Recruiter@1234 |
-| User | user@careerhub.com | User@1234 |
+| Admin | admin@email.com | Pass@1234 |
+| Recruiter | recruiter@gmail.com | Pass@1234 |
+| User | user@email.com | Pass@1234 |
 
 ---
 
