@@ -23,15 +23,7 @@ The project includes:
 - Backend Stack
 - Frontend Stack
 - Project Structure
-- Environment Variables
-- Installation
-- Running the Project
-- Testing
-- API Overview
-- Authentication Flow
-- Real-time Notifications
-- File Uploads
-- Deployment
+- Test Credentials
 - Contributors
 - License
 
@@ -115,6 +107,20 @@ Cloudinary (File Storage)
 - Custom useForm hook
 - Custom validation library
 - Custom toast system
+
+---
+
+## ✨ Live Demo
+
+🚀 **[https://op-career-hub-frontend.vercel.app/](https://op-career-hub-frontend.vercel.app/)**
+
+**Test credentials**
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@email.com | Pass@1234 |
+| Recruiter | recruiter@gmail.com | Pass@1234 |
+| User | user@email.com | Pass@1234 |
 
 ---
 

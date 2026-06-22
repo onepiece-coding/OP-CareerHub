@@ -20,8 +20,9 @@
 
 ## ✨ Live Demo
 
-🚀 **[careerhub.example.com](https://op-career-hub-frontend.vercel.app/)**
+🚀 **[https://op-career-hub-frontend.vercel.app/](https://op-career-hub-frontend.vercel.app/)**
 
+<<<<<<< HEAD
 **Test credentials**
 
 | Role | Email | Password |
@@ -30,6 +31,8 @@
 | Recruiter | recruiter@gmail.com | Pass@1234 |
 | User | user@email.com | Pass@1234 |
 
+=======
+>>>>>>> 631d88981fbe54f30300a9e93aaec73d26d3f739
 ---
 
 ## 🚀 Features
